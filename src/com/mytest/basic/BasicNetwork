@@ -1,0 +1,226 @@
+网络编程
+
+网络分类：按地理分类
+1、局域网（LocalArea Network）简称 LAN，是一种在小范围内实现的计算机网络，一般在一个建筑物内或者一个工厂、一个事业单位内部独有，范围较小。
+2、城域网（Metropolitan Area Network）简称为 MAN，一般是一个城市内部组建的计算机信息网络，提供全市的信息服务。
+3、广域网（Wide Area Network）简称为 WAN，范围很广，可以分布在一个省、一个国家或者几个国家。
+4、因特网（Internet）则是由无数的 LAN 和 WAN 组成的
+
+网络编程模型：
+1、客户机/服务器（Client/Server）模式，简称为 C/S 模式；
+2、浏览器/服务器（Browser/Server）模式，简称 B/S 模式
+
+OSI 七层模型：
+应用层：网络服务与最终用户的一个接口。
+表示层：数据的表示、安全、压缩。
+会话层：建立、管理、终止会话。
+传输层：定义传输数据的协议端口号，以及流控和差错校验。
+网络层：进行逻辑地址寻址，实现不同网络之间的路径选择。
+数据链路层：建立逻辑连接、进行硬件地址寻址、差错校验等功能。
+物理层：建立、维护、断开物理连接
+
+网络协议：
+1、IP 协议：Internet Protocol（网络之间互联的协议）
+命名 IP 地址的规定是 IPv4 协议，该协议规定每个 IP 地址由 4 个 0~255 的数字组成
+2、TCP/IP 协议：Transmission Control Protocol/Internet Protocol
+Internet 网络中采用的协议是 TCP/IP 协议
+TCP/IP 协议采用了 4 层的层级结构，分别是应用层、传输层、网络层和网络接口层
+3、TCP 与 UDP 协议：
+TCP/IP 协议的传输层同时存在 TCP（Transmission Control Protocol，传输控制协议）和 UDP（User Datagram Protocol，用户数据报协议）两个协议
+
+TCP 和 UDP 的区别：
+1、TCP面向连接（如打电话要先拨号建立连接）；UDP是无连接的，即发送数据之前不需要建立连接。
+2、TCP提供可靠的服务。也就是说，通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达；UDP尽最大努力交付，即不保证可靠交付。
+3、Tcp通过校验和，重传控制，序号标识，滑动窗口、确认应答实现可靠传输。如丢包时的重发控制，还可以对次序乱掉的分包进行顺序控制；
+   UDP具有较好的实时性，工作效率比TCP高，适用于对高速传输和实时性有较高的通信或广播通信。
+4、TCP 协议是一种以固定连线为基础的协议，它提供两台计算机之间可靠的数据传送；
+   UDP 无连接通信协议，它不保证可靠数据的传输，但能够向若干目标发送数据以及接收来自若干源的数据
+5、每一条TCP连接只能是点到点的；UDP支持一对一，一对多，多对一和多对多的交互通信。
+6、TCP对系统资源要求较多，UDP对系统资源要求较少
+
+
+套接字（Socket）：
+实现网络通信必须将两台计算机连接起来建立一个双向的通信链路，这个双向通信链路的每一端称之为一个套接字（Socket）
+
+端口号（Port）：通常使用一个 0~65535 的整数来标识服务器上的某个服务
+1、由 Internet 名字和号码指派公司 ICANN 分配绐一些常用的应用层程序固定使用的熟知端口，其值是 0~1023。
+例如 HTTP 服务一般使用 80 端口，FTP 服务使用 21 端口。
+2、一般端口用来随时分配绐请求通信的客户进程
+
+
+
+InetAddress 类：  java.net 包
+InetAddress 类对象包含一个 Internet 主机地址的域名和 IP 地址
+注：域名和 IP 地址可表示 Internet 上的主机地址
+注：InetAddress 类提供了操作 IP 地址的各种方法。该类本身没有构造方法，而是通过调用相关静态方法获取实例
+
+InetAddress 类常用方法：
+boolean equals(Object obj)	                    将此对象与指定对象比较
+byte[] getAddress()	                            返回此 InetAddress 对象的原始 IP 地址
+static InetAddress[] getAHByName(String host)	在给定主机名的情况下，根据系统上配置的名称，服务器返回其 IP 地址所组成的数组
+static InetAddress getByAddress(byte[] addr)	在给定原始 IP 地址的情况下，返回 InetAddress 对象
+static InetAddress getByAddress(String host)	在给定主机名的情况下，返回 InetAddress 对象
+String getCanonicalHostName()	                获取此 IP 地址的完全限定域名
+String getHostAddress()	                        返回 IP 地址字符串（以文本表现形式）
+String getHostName()	                        返回此 IP 地址的主机名
+static InetAddress getLocalHost()	            返回本地主机
+
+
+
+TCP 网络程序是指利用 Socket 编写的通信程序
+ServerSocket 类表示 Socket 服务器端，Socket 类表示 Socket 客户端，两者之间的交互过程如下：
+1、服务器端创建一个 ServerSocket（服务器端套接字），调用 accept() 方法等待客户端来连接。
+2、客户端程序创建一个 Socket，请求与服务器建立连接。
+3、服务器接收客户的连接请求，同时创建一个新的 Socket 与客户建立连接，服务器继续等待新的请求
+
+ServerSocket 类：用于表示通信双方中的服务器端，在服务器上开一个端口，被动地等待数据（使用 accept() 方法）并建立连接进行数据交互
+注：如果多台客户端同时提出连接请求，服务器套接字会将请求连接的客户端存入队列中，然后从中取出一个套接字与服务器新建的套接字连接起来。
+注：若请求连接大于最大容纳数，则多出的连接请求被拒绝；默认的队列大小是 50
+
+ServerSocket 类构造方法：
+1、ServerSocket()：无参构造方法。
+2、ServerSocket(int port)：创建绑定到特定端口的服务器套接字。
+3、ServerSocket(int port,int backlog)：使用指定的 backlog 创建服务器套接字并将其绑定到指定的本地端口。
+4、ServerSocket(int port,int backlog, InetAddress bindAddr)：使用指定的端口、监听 backlog 和要绑定到本地的 IP 地址创建服务器
+port 指的是本地 TCP 端口，backlog 指的是监听 backlog，bindAddr 指的是要将服务器绑定到的 InetAddress
+注：创建 ServerSocket 时可能会拋出 IOException 异常，所以要进行异常捕捉
+
+ServerSocket 类常用方法：
+Socket accept()：                      监听并接收到此套接字的连接。调用 accept() 方法会返回一个和客户端 Socket 对象相连接的 Socket 对象
+void bind(SocketAddress endpoint)：    将 ServerSocket 绑定到指定地址（IP 地址和端口号）。
+void close()：                         关闭此套接字。
+InetAddress getInetAddress()：         返回此服务器套接字的本地地址。
+int getLocalPort()：                   返回此套接字监听的端口。
+SocketAddress getLocalSocketAddress()：返回此套接字绑定的端口的地址，如果尚未绑定则返回 null。
+int getReceiveBufferSize()：           获取此 ServerSocket 的 SO_RCVBUF 选项的值，该值是从 ServerSocket 接收的套接字的建议缓冲区大小
+
+服务器端的 Socket 对象使用 getOutputStream() 方法获得的输出流将指定客户端 Socket 对象使用 getInputStream() 方法获得的那个输入流
+服务器端的 Socket 对象使用 getInputStream() 方法获得的输入流将指向客户端 Socket 对象使用 getOutputStream() 方法获得的那个输出流
+
+Socket 类：表示通信双方中的客户端，用于呼叫远端机器上的一个端口，主动向服务器端发送数据（当连接建立后也能接收数据）
+Socket 类构造方法：
+1、Socket()：无参构造方法。
+2、Socket(InetAddress address, int port)：创建一个流套接字并将其连接到指定 IP 地址的指定端口。
+3、Socket(InetAddress address, int port, InetAddress localAddr, int localPort)：创建一个套接字并将其连接到指定远程地址上的指定远程端口。
+4、Socket(String host, int port)：创建一个流套接字并将其连接到指定主机上的指定端口。
+5、Socket(String host, int port, InetAddress localAddr, int localPort)：创建一个套接字并将其连接到指定远程地址上的指定远程端口。
+Socket 会通过调用 bind() 函数来绑定提供的本地地址及端口。
+address 指的是远程地址，port 指的是远程端口，localAddr 指的是要将套接字绑定到的本地地址，localPort 指的是要将套接字绑定到的本地端口
+
+Socket 类常用方法：
+void bind(SocketAddress bindpoint)：    将套接字绑定到本地地址。
+void close()：                          关闭此套接字。
+void connect(SocketAddress endpoint)：  将此套接字连接到服务器。
+InetAddress getInetAddress()：          返回套接字的连接地址。
+InetAddress getLocalAddress()：         获取套接字绑定的本地地址。
+InputStream getInputStream()：          返回此套接字的输入流。
+OutputStream getOutputStream()：        返回此套接字的输出流。
+SocketAddress getLocalSocketAddress()： 返回此套接字绑定的端点地址，如果尚未绑定则返回 null。
+SocketAddress getRemoteSocketAddress()：返回此套接字的连接的端点地址，如果尚未连接则返回 null。
+int getLocalPort()：                    返回此套接字绑定的本地端口。
+int getPort()：                         返回此套接字连接的远程端口
+
+
+
+UDP通信：用户数据报协议，用于网络数据的传输
+UDP 协议发送数据的步骤：
+1、使用 DatagramSocket() 创建一个数据包套接字。
+2、使用 DatagramPacket() 创建要发送的数据包。
+3、使用 DatagramSocket 类的 send() 方法发送数据包。
+
+接收 UDP 数据包的步骤：
+1、使用 DatagramSocket 创建数据包套接字，并将其绑定到指定的端口。
+2、使用 DatagramPacket 创建字节数组来接收数据包。
+3、使用 DatagramPacket 类的 receive() 方法接收 UDP 包
+
+DatagramPacket 类用来表示数据报包，数据报包用来实现无连接包投递服务   java.net 包中
+DatagramPacket 类构造方法：
+DatagramPacket(byte[] buf,int length)	                                构造 DatagramPacket，用来接收长度为 length 的数据包。
+DatagramPacket(byte[] buf,int offset, int length)	                    构造 DatagramPacket，用来接收长度为 length 的包，在缓冲区中指定了偏移量。
+DatagramPacket(byte[] buf,int length, InetAddress address, int port)	构造 DatagramPacket，用来将长度为 length 的包发送到指定主机上的指定端口。
+DatagramPacket(byte[] buf,int length, SocketAddress address)	        构造数据报包，用来将长度为 length 的包发送到指定主机上的指定端口。
+DatagramPacket(byte[] buf,int offset,int length,InetAddress address,int port)	构造 DatagramPacket，
+                                                                        用来将长度为 length 偏移量为 offset的包发送到指定主机上的指定端口。
+DatagramPacket(byte[] buf,int offset,int length,SocketAddress address)	构造数据报包，用来将长度为 length、偏移量为 offset 的包发送到指定主机上的指定端口。
+
+DatagramPacket 类常用方法：
+InetAddress getAddress()	                    返回某台机器的 IP 地址，此数据报将要发往该机器或者从该机器接收。
+byte[] getData()	                            返回数据缓冲区
+int getLength()	                                返回将要发送或者接收的数据的长度
+int getOffset()	                                返回将要发送或者接收的数据的偏移量
+int getPort()	                                返回某台远程主机的端口号，此数据报将要发往该主机或者从该主机接收。
+getSocketAddress()	                            获取要将此包发送或者发出此数据报的远程主机的SocketAddress（通常为 IP地址+端口号）。
+void setAddress(InetAddress addr)               设置要将此数据报发往的目的机器的IP地址。
+void setData(byte[] buf)	                    为此包设置数据缓冲区。
+void setData(byte[] buf,int offset,int length)	为此包设置数据缓冲区
+void setLength(int length)	                    为此包设置长度
+void setPort(int port)	                        设置要将此数据报发往的远程主机的端口号
+void setSocketAddress(SocketAddress address)	设置要将此数据报发往的远程主机的SocketAddress（通常为 IP地址+端口号）
+
+DatagramSocket 类用于表示发送和接收数据报包的套接字
+注：数据报包套接字是包投递服务的发送或接收点。每个在数据报包套接字上发送或接收的包都是单独编址和路由的。
+注：从一台机器发送到另一台机器的多个包可能选择不同的路由，也可能按不同的顺序到达
+
+DatagramSocket 类构造方法：
+DatagramSocket()	                        构造数据报包套接字并将其绑定到本地主机上任何可用的端口。
+DatagramSocket(int port)	                创建数据报包套接字并将其绑定到本地主机上的指定端口。
+DatagramSocket(int port，InetAddress addr)	创建数据报包套接字，将其绑定到指定的本地地址。
+DatagramSocket(SocketAddress bindaddr)	    创建数据报包套接字，将其绑定到指定的本地套接字地址
+
+DatagramSocket 类常用方法：
+void bind(SocketAddress addr)	            将此 DatagramSocket 绑定到特定的地址和端口。
+void close()	                            关闭此数据报包套接字。
+void connect(InetAddress address,int port)	将套接字连接到此套接字的远程地址。
+void connect(SocketAddress addr)	        将此套接子连接到远程套接子地址（IP地址+端口号）。
+void disconnect()	                        断开套接字的连接。
+InetAddress getInetAddress()	            返回此套接字连接的地址。
+InetAddress getLocalAddress()	            获取套接字绑定的本地地址。
+int getLocalPort()	                        返回此套接字绑定的本地主机上的端口号。
+int getPort()	                            返回此套接字的端口
+
+
+
+URL：统一资源定位符（Uniform Resource Locator）  表示 Internet 上某一资源的地址
+注：通过 URL 用户可以访问各种网络资源，比如常见的 WWW 以及 FTP 站点。浏览器可以通过解析给定的 URL 在网络上查找相应的文件或其他资源
+
+URL 语法格式：protocol://resourceName       java.net 包中
+如：http://www.sun.com/    协议名：//主机名
+    http://localhost:8080/Test/admin/login.jsp 协议名://机器名：端口号/文件名
+协议名（protocol）指明获取资源所使用的传输协议，如 HTTP、FTP 和 file 等
+资源名（resourceName）则应该是资源的完整地址，包括主机名、端口号、文件名或文件内部的一个引用
+
+URL 类构造方法：
+public URL(String spec)	                                        通过一个表示 URL 地址的字符串可以构造一个 URL 对象。
+public URL(URL context,String spec)	                            使用基本地址和相对 URL 构造一个 URL 对象。
+public URL(String protocol,String host,String file)	            使用指定的协议、主机名和文件名创建一个 URL 对象。
+public URL(String protocol,String host,int port,String file)	使用指定的协议、主机名、端口号和文件名创建一个 URL 对象
+
+URL 类常用方法：
+public String getProtocol()	    获取该 URL 的协议名。
+public String getHost()	        获取该 URL 的主机名。
+public int getPort()	        获取该 URL 的端口号，如果没有设置端口，返回 -1。
+public String getFile()	        获取该 URL 的文件名。
+public String getRef()	        获取该 URL 在文件中的相对位置。
+public String getQuery()	    获取该 URL 的查询信息。
+public String getPath()	        获取该 URL 的路径。
+public String getAuthority()	获取该 URL 的权限信息。
+public String getUserInfo()	    获得使用者的信息。
+public String getRef()	        获得该 URL 的锚点
+
+URLConnection 类：表示与 URL 建立的通信连接
+注：URLConnection 类的对象使用 URL 类的 openConnection() 方法获得
+
+URLConnection 类常用方法：
+void addRequestProperty(String key,String value)	添加由键值对指定的一般请求属性。key 指的是用于识别请求的关键字（例如 accept），value 指的是与该键关联的值。
+void connect()	                                    打开到此 URL 所引用的资源的通信链接（如果尚未建立这样的链接）。
+Object getConnection()	                            检索此 URL 链接的内容。
+InputStream getInputStream()	                    返回从此打开的链接读取的输入流。
+OutputStream getOutputStream()	                    返回写入到此链接的输出流。
+URL getURL()	                                    返回此 URLConnection 的 URL 字段的值
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+Runtime 类：描述程序运行时的状态，与 JVM 运行状态有关，在整个程序运行过程中会默认提供一个 Runtime 实例化对象
+    private Runtime() { }
+Runtime 类构造方法私有化类，意味着 Runtime 类采用单例设计模式（单例模式 饿汉写法）：
+    private static final Runtime currentRuntime = new Runtime();
+    public static Runtime getRuntime() {
+            return currentRuntime;
+    }
+
+
+
+
+
+
+
+
+
+
+

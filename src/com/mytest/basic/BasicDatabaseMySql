@@ -1,0 +1,338 @@
+MySql
+
+部分命令失效：
+1、命令行：export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
+2、打开.bash_profile:
+   cd ~/
+   open .bash_profile
+   修改保存
+3、使修改后的配置生效命令：
+   source .bash_profile
+
+mac电脑登录：
+命令行：/usr/local/mysql/bin/mysql -u root -p    然后输入密码
+或者在 .bash_profile 中添加环境变量后：mysql -u root -p  然后输入密码(自己设置的密码：root) -h (想要 mysql 登录所在的 IP 地址：如：localhost)
+
+MySQL commands: Note that all text commands must be first on line and end with ';'
+?              (\?) Synonym for `help'.
+clear          (\c) Clear the current input statement.
+connect        (\r) Reconnect to the server. Optional arguments are db and host.
+delimiter      (\d) Set statement delimiter.
+edit           (\e) Edit command with $EDITOR.
+ego            (\G) Send command to mysql server, display result vertically.
+exit           (\q) Exit mysql. Same as quit.
+go             (\g) Send command to mysql server.
+help           (\h) Display this help.
+nopager        (\n) Disable pager, print to stdout.
+notee          (\t) Don't write into outfile.
+pager          (\P) Set PAGER [to_pager]. Print the query results via PAGER.
+print          (\p) Print current command.
+prompt         (\R) Change your mysql prompt.
+quit           (\q) Quit mysql.
+rehash         (\#) Rebuild completion hash.
+source         (\.) Execute an SQL script file. Takes a file name as an argument.
+status         (\s) Get status information from the server.
+system         (\!) Execute a system shell command.
+tee            (\T) Set outfile [to_outfile]. Append everything into given outfile.
+use            (\u) Use another database. Takes database name as argument.
+charset        (\C) Switch to another charset. Might be needed for processing binlog with multi-byte charsets.
+warnings       (\W) Show warnings after every statement.
+nowarning      (\w) Don't show warnings after every statement.
+resetconnection(\x) Clean session context.
+
+查看 mysql 数据库编码：SHOW VARIABLES LIKE 'char%';
+    SHOW VARIABLES LIKE 'char%';
+    +--------------------------+-----------------------------------------------------------+
+    | Variable_name            | Value                                                     |
+    +--------------------------+-----------------------------------------------------------+
+    | character_set_client     | utf8mb4  //客户端发送给服务器端的编码数据                     |
+    | character_set_connection | utf8mb4                                                   |
+    | character_set_database   | utf8mb4                                                   |
+    | character_set_filesystem | binary                                                    |
+    | character_set_results    | utf8mb4  //服务器端发送给客户端的编码数据                     |
+    | character_set_server     | utf8mb4                                                   |
+    | character_set_system     | utf8                                                      |
+    | character_sets_dir       | /usr/local/mysql-8.0.18-macos10.14-x86_64/share/charsets/ |
+    +--------------------------+-----------------------------------------------------------+
+设置数据库编码：eg: SET character_set_client=gbk;  //只修改一次，命令窗口关闭重新打开默认恢复原先值 utf8mb4
+                  SET character_set_client=results;  //只修改一次，命令窗口关闭重新打开默认恢复原先值 utf8mb4
+
+备份与恢复：
+1、数据库导出 sql 脚本：mysqldump -u 用户名 -p 密码 要导出的数据库名>放置脚本文件的路径
+   eg: mysqldump -u root -p root mydb1>/Users/murongyunge/Desktop/IntelliJ/mydb1.sql  //直接在 cmd 命令下执行，无需 ; 分号结尾
+2、执行 sql 脚本：
+   1）、mysql -u 用户名 -p 密码 新生成的数据库名<脚本文件的路径
+       eg: mysql -u root -p root mydb1</Users/murongyunge/Desktop/IntelliJ/mydb1.sql  //直接在 cmd 命令下执行，无需 ; 分号结尾
+   2）、登录 mysql： mysql -u 用户名 -p 密码;
+        创建新的数据库：CREATE DATABASE [IF NOT EXISTS] mydb2;
+        切换创建的数据库：USE mydb2;
+        执行 sql 脚本：SOURCE /Users/murongyunge/Desktop/IntelliJ/mydb1.sql;
+
+
+1、更改初始密码：
+执行语句：SET PASSWORD FOR ‘root’@‘localhost’ = PASSWORD(‘新密码’);
+或 ALTER USER 'root'@'localhost' IDENTIFIED BY '新密码';
+刷新：FLUSH PRIVILEGES;
+   更改编码：ALERT DATABASE 数据库名 CHARACTER SET utf8;
+
+2、查询数据库：show databases;
+   查看当前数据库下所有表名称：SHOW TABLES
+
+3、新建数据库：create database [IF NOT EXISTS] 数据库名 [CHARSET = utf8];
+   eg：create database test;
+
+4、使用某个数据库：use 数据库名;
+   eg：use test;
+
+4.5、数据库表中常用类型：
+    int: 整型
+    double: 浮点型，如 double(5, 2)，表示数字位数最多5位，其中2位小数，最大值为999.99
+    decimal: 浮点型，一般用于钱方面，以免精度丢失
+    char: 固定长度字符串，如 char(255B)，字节，数据长度小于指定长度，自动添加空格来补足到指定长度
+    varchar: 可变长度字符串，如 varchar(65535B)
+    text(clob): 字符串类型，分极小、小、中、大    注：在数据库中，字符串必须是单引号，不能是双引号！！！
+    blob: 字节类型，分极小、小、中、大
+    date: 日前类型，格式：yyyy-MM-dd   注：日前类型也要用单引号
+    time: 时间类型，格式：HH:mm:ss
+    timestamp: 时间戳
+
+5、新建表格：先使用数据库，后新建表格，如：student 为任意表格名
+   create table [IF NOT EXISTS ] student(
+       -> id int primary key auto_increment,
+       -> name varchar(20),
+       -> sex varchar(2),
+       -> age int(20),
+       -> addr varchar(200),
+       -> birthday date
+       -> )character set utf8 collate utf8_general_ci;
+
+5、5 数据库中表格修改：
+   添加列：ALTER TABLE 表名 ADD (
+          -> 列名 列类型,
+          -> 列名 列类型,
+          ...
+          -> ) [FIRST | AFTER 列名];
+   修改列类型：ALTER TABLE 表名 MODIFY 原列名 新列类型;  注：新修改的类型可能会影响到原列名中已存在的数据
+   修改列名：ALTER TABLE 表名 CHANGE 原列名 新列名 列类型;
+   删除列：ALTER TABLE 表名 DROP 列名;
+   修改表名称：ALTER TABLE 原表名 RENAME TO 新表名;
+
+6、查询表格：desc 表格名;
+   eg：desc student;
+   若存在，则如下：
+   +-------+--------------+------+-----+---------+----------------+
+   | Field | Type         | Null | Key | Default | Extra          |
+   +-------+--------------+------+-----+---------+----------------+
+   | id    | int(11)      | NO   | PRI | NULL    | auto_increment |
+   | name  | varchar(20)  | YES  |     | NULL    |                |
+   | sex   | varchar(2)   | YES  |     | NULL    |                |
+   | age   | int(20)      | YES  |     | NULL    |                |
+   | addr  | varchar(200) | YES  |     | NULL    |                |
+   +-------+--------------+------+-----+---------+----------------+
+    若不存在：
+    ERROR 1146 (42S02): Table 'test.student' doesn't exist
+
+7、删除表格：drop table 表格名; 或 DROP TABLE 表格名;
+   eg：drop table student;
+
+8、删除数据库：drop database [IF EXISTS]数据库名;
+   eg：drop database test;
+
+
+9、显示 mysql 端口：
+   show global variables like 'port';
+   +---------------+-------+
+   | Variable_name | Value |
+   +---------------+-------+
+   | port          | 3306  |
+   +---------------+-------+
+
+10、查看当前表下所有的记录，即保存的数据：SELECT * FROM 表名;
+    SELECT * FROM student;
+    +----+--------+------+------+------------+
+    | id | name   | sex  | age  | birthday   |
+    +----+--------+------+------+------------+
+    |  1 | Kiva   | 男   |   22 | 1987-12-04 |
+    | 10 | Poppy  | 女   |   20 | 1993-08-15 |
+    | 14 | Decade | 男   |   23 | 1988-11-12 |
+    | 15 | Wizard | 男   |   22 | 1990-09-19 |
+    +----+--------+------+------+------------+
+
+
+11、1)、表中插入数据：insert into 表名(参数1, 参数2, 参数3, ...) values('实参1', '实参2', '实参3', ...)
+       eg：insert into student(name,sex,age,birthday) values('Kiva','男','22','1987-12-04');
+       注："实参"的个数要与"参数"个数一致；列名没有给定的默认添加为 NULL;
+    2)、表中插入数据：insert into 表名 values('实参1', '实参2', '实参3', ...)
+       注：该命令表示插入所有的列名；"实参"个数要与该表的列个数一致；"实参"的顺序必须与创建时的列名顺序一致
+
+12、表中修改数据：UPDATE 表名 SET 列名1=列值1, 列名2=列值2, 列名3=列值3, ... [WHERE 条件];
+           条件可选，条件必须是 boolean 类型的值或表达式，eg：UPDATE student SET age=25 WHERE name='Kiva';
+           其中，表达式运算符有：=、!=(登记于<>)、<、>、>=、<=、BETWEEN .. AND、IN(...)、IS NULL、OR、AND
+           eg：UPDATE student SET age=25 WHERE age BETWEEN 21 AND 23;
+              等价于：UPDATE student SET age=25 WHERE age>= 21 AND age<=23;
+              UPDATE student SET age=25 WHERE name IN('Decade', 'Wizard');
+              等价于：UPDATE student SET age=25 WHERE name='Decade' OR name='Wizard';
+              注：UPDATE student SET age=25 WHERE name=null;  //条件 name=null 一直为 false
+                  应为：UPDATE student SET age=25 WHERE name IS NULL;
+    1)、表中修改数据：update 表名 set 参数1=实参1[, 参数2=实参2, 参数3=实参3 ...]; // 修改该列名下所有的数据
+    2）、表中修改数据（带条件）：update 表名 set 参数1=实参1[, 参数2=实参2, 参数3=实参3 ...]
+                          where 参数=实参[ or 参数n=实参n]; //修改满足"参数=实参"的数据
+
+13、1)、表中删除数据：DELETE FROM 表名[ WHERE 条件];  //若果不带条件，则删除表中所有数据
+    2)、
+
+
+
+DCL ：数据控制语言 DCL Data Control Language：
+    数据控制语言 DCL 用来授予或回收访问数据库的某种特权，并控制数据库操纵事务发生的时间及效果，对数据库实行监视等
+1、创建用户：CREATE USER 用户名@ip地址 IDENTIFIED BY '密码';  //用户在指定ip地址上登录
+           CREATE USER 用户名@'%' IDENTIFIED BY '密码';  //用户在任意ip地址上登录
+
+2、授权用户：GRANT 权限1, 权限2, ... ON 数据库.* TO 用户名@ip地址;  //给用户分配指定数据库上的某些权限
+            eg：GRANT CREATE, ALERT, DROP, INSERT, UPDATE, DELETE, SELECT ON mysql.* TO user1@localhost;
+           GRANT ALL ON 数据库.* TO 用户名@ip地址;  ////给用户分配指定数据库上的所有权限
+
+3、撤销授权：REVOKE 权限1, 权限2, ... ON 数据库.* FROM 用户名@ip地址;  //撤销用户在指定数据库上的某些权限
+
+4、查看用户权限：SHOW GRANTS FOR 用户名@ip地址;  //查看指定用户权限
+
+5、删除用户：DELETE USER 用户名@ip地址;
+
+
+DQL ：数据查询语言 DQL Data Query Language
+1、查看当前表下所有的记录，即保存的数据：SELECT * FROM 表名;
+   SELECT * FROM student;
+2、查看当前表下指定列名的记录：SELECT 列名1[, 列名2, 列名2 ... ] FROM 表名;
+   SELECT sex, age FROM student;
+   +------+------+
+   | sex  | age  |
+   +------+------+
+   | 男   |   22 |
+   | 女   |   20 |
+   | 男   |   23 |
+   | 男   |   22 |
+   +------+------+
+3、查看当前表下指定列名的记录，并使重复的记录只显示一次：
+   1)、SELECT DISTINCT * FROM 表名;
+   2)、SELECT DISTINCT 列名1[, 列名2, 列名2 ... ] FROM 表名;
+       SELECT DISTINCT sex, age FROM student;
+       +------+------+
+       | sex  | age  |
+       +------+------+
+       | 男   |   22 |
+       | 女   |   20 |
+       | 男   |   23 |
+       +------+------+
+4、列运算：给指定列中的数据进行运算（运算结果只用于显示，不影响列中原来的数据记录）
+  1)、数据类型的列可以进行四则运算：
+      eg：SELECT *,age + IFNULL (salary, 0) FROM student;  //IFNULL (salary, 0)：NULL 的转化，如果不转换"*+NULL=NULL"
+         +----+--------+------+------+------------+--------+--------------------------+
+         | id | name   | sex  | age  | birthday   | salary | age + IFNULL (salary, 0) |
+         +----+--------+------+------+------------+--------+--------------------------+
+         |  1 | Kiva   | 男   |   22 | 1987-12-04 |   NULL |                    22.00 |
+         | 10 | Poppy  | 女   |   20 | 1993-08-15 |   NULL |                    20.00 |
+         | 14 | Decade | 男   |   23 | 1988-11-12 |   NULL |                    23.00 |
+         | 15 | Wizard | 男   |   22 | 1990-09-19 |   NULL |                    22.00 |
+         +----+--------+------+------+------------+--------+--------------------------+
+  2)、字符串类型可拼接：
+      eg：SELECT CONCAT('Kamen Rider ', name, ', ', age, 'years old.') From student;
+         +-------------------------------------------------------+
+         | CONCAT('Kamen Rider ', name, ', ', age, 'years old.') |
+         +-------------------------------------------------------+
+         | Kamen Rider Kiva, 22years old.                        |
+         | Kamen Rider Poppy, 20years old.                       |
+         | Kamen Rider Decade, 23years old.                      |
+         | Kamen Rider Wizard, 22years old.                      |
+         +-------------------------------------------------------+
+  3)、转换 null 值：因为 null + 任何数 都为 null
+      eg：SELECT *, IFNULL(salary, 1) + 1000 From student;
+         +----+--------+------+------+------------+--------+--------------------------+
+         | id | name   | sex  | age  | birthday   | salary | IFNULL(salary, 1) + 1000 |
+         +----+--------+------+------+------------+--------+--------------------------+
+         |  1 | Kiva   | 男   |   22 | 1987-12-04 |   NULL |                  1001.00 |
+         | 10 | Poppy  | 女   |   20 | 1993-08-15 |   NULL |                  1001.00 |
+         | 14 | Decade | 男   |   23 | 1988-11-12 |   NULL |                  1001.00 |
+         | 15 | Wizard | 男   |   22 | 1990-09-19 |   NULL |                  1001.00 |
+         +----+--------+------+------+------------+--------+--------------------------+
+  4)、转换列名：SELECT 列名 [AS] 列名 FROM 表名;
+      eg: SELECT *,CONCAT('Kamen Rider ', name, ', ', age, 'years old.') AS 'Rider' From student;
+          +----+--------+------+------+------------+--------+----------------------------------+
+          | id | name   | sex  | age  | birthday   | salary | Rider                            |
+          +----+--------+------+------+------------+--------+----------------------------------+
+          |  1 | Kiva   | 男   |   22 | 1987-12-04 |   NULL | Kamen Rider Kiva, 22years old.   |
+          | 10 | Poppy  | 女   |   20 | 1993-08-15 |   NULL | Kamen Rider Poppy, 20years old.  |
+          | 14 | Decade | 男   |   23 | 1988-11-12 |   NULL | Kamen Rider Decade, 23years old. |
+          | 15 | Wizard | 男   |   22 | 1990-09-19 |   NULL | Kamen Rider Wizard, 22years old. |
+          +----+--------+------+------+------------+--------+----------------------------------+
+5、查询附带条件控制
+  1)、SELECT * FROM student WHERE  boolean 类型的值或表达式; //运算符有：=、!=(登记于<>)、<、>、>=、<=、BETWEEN .. AND、IN(...)、IS NULL、OR、AND
+  2)、模糊查询：使用关键字 LIKE：SELECT * FROM student WHERE 表达式 LIKE 任意一个字符串;
+      eg：SELECT * FROM student WHERE name LIKE 'K_';  // 查询表中姓名'K'为首，共两字的数据
+          SELECT * FROM student WHERE name LIKE '___';  // 查询表中姓名为三字的数据
+          SELECT * FROM student WHERE name LIKE 'K%';  // % 可匹配0～N个字符，此语句为查询表中姓名'K'为首的所有的数据
+          SELECT * FROM student WHERE name LIKE '%K%';  // % 可匹配0～N个字符，此语句为查询表中姓名带'K'的数据，包含'K'为首或收尾
+          SELECT * FROM student WHERE name LIKE '%';  // % 可匹配0～N个字符，此语句为查询表中所有姓名非 null 的数据
+
+6、排序，查询出的显示的数据升序或降序
+  1)、单列升序：SELECT * FROM 表名 ORDER BY 列名 ASC;  //按照 指定列数据升序
+  2)、单列降序：SELECT * FROM 表名 ORDER BY 列名 DESC; //按照 指定列数据降序
+  3)、多列排序：SELECT * FROM 表名 ORDER BY 列名1 ASC|DESC, 列名2 ASC|DESC[, 列名3 ASC|DESC, ... ];
+
+7、聚合函数：对指定列进行纵向运算
+  1)、SELECT COUNT(*|列名) FROM 表名;  // 查询表中或某一指定列有效行数(非 null)
+  2)、SELECT MAX(列名) FROM 表名;  // 查询某一指定列中最大值
+  3)、SELECT MIN(列名) FROM 表名;  // 查询某一指定列中最小值
+  4)、SELECT SUM(列名) FROM 表名;  // 查询某一指定列中总值
+  5)、SELECT AVG(列名) FROM 表名;  // 查询某一指定列中平均值
+     eg：SELECT COUNT(*) 人数, SUM(age) 总年龄, MAX(age) 最大年龄, MIN(age) 最小年龄, AVG(age) 平均
+        +--------+-----------+--------------+--------------+--------------+
+        | 人数   | 总年龄    | 最大年龄     | 最小年龄     | 平均年龄     |
+        +--------+-----------+--------------+--------------+--------------+
+        |      4 |        87 |           23 |           20 |      21.7500 |
+        +--------+-----------+--------------+--------------+--------------+
+
+8、分组查询：把表中数据按照某一指定列分组，然后查询组信息
+   SELECT 列名 可进行纵向运算的列的聚合函数 FROM 表名 GROUP BY 该列名;
+       eg: SELECT sex, COUNT(*), MAX(age) FROM student GROUP BY sex;
+           +------+----------+----------+
+           | sex  | COUNT(*) | MAX(age) |
+           +------+----------+----------+
+           | 男   |        3 |       23 |
+           | 女   |        1 |       20 |
+           +------+----------+----------+
+   分组前条件：SELECT 列名 可进行纵向运算的列的聚合函数 FROM 表名 WHERE 原列名参与的表达式 GROUP BY 该列名;
+      eg: SELECT sex, COUNT(*), MAX(age) FROM student WHERE name LIKE 'K%' GROUP BY sex;
+          +------+----------+----------+
+          | sex  | COUNT(*) | MAX(age) |
+          +------+----------+----------+
+          | 男   |        1 |       22 |
+          +------+----------+----------+
+   分组后条件：SELECT 列名 可进行纵向运算的列的聚合函数 FROM 表名 GROUP BY 该列名 HAVING 新列名参与的表达式;
+      eg: SELECT sex, COUNT(*), MAX(age) FROM student GROUP BY sex HAVING COUNT(*) > 2;
+          +------+----------+----------+
+          | sex  | COUNT(*) | MAX(age) |
+          +------+----------+----------+
+          | 男   |        3 |       23 |
+          +------+----------+----------+
+8、limit 子句，mysql 数据库独有，用来限定查询结果的起始行（从 0 开始算一行）与行数
+   eg：SELECT * FROM student LIMIT 1, 2;  // 表示查询结果从第 2 行开始显示，共 2 行
+      +----+--------+------+------+------------+--------+
+      | id | name   | sex  | age  | birthday   | salary |
+      +----+--------+------+------+------------+--------+
+      | 10 | Poppy  | 女   |   20 | 1993-08-15 |   NULL |
+      | 14 | Decade | 男   |   23 | 1988-11-12 |   NULL |
+      +----+--------+------+------+------------+--------+
+
+Mysql批量插入数据时解决重复：
+1、insert ignore into(若没有则插入，若存在则忽略)
+insert ignore 会根据主键或者唯一键判断，若数据库没有该条数据，就插入为新的数据；若数据库有该条数据，就忽略这条插入语句
+
+2、insert into ... on duplicate key update(若没有则正常插入，若存在则更新)
+在 insert into 语句末尾指定 on duplicate key update，会根据主键或者唯一键判断，
+若数据库有该条数据，则直接更新原数据；若数据库没有该条数据，则插入为新的数据
+
+3、replace into(若没有则正常插入，若存在则先删除后插入)
+replace into 会根据主键或者唯一键判断：
+若表中已存在该数据，则先删除此行数据，然后插入新的数据；若表中不存在该数据，则直接插入新数据，
+
+

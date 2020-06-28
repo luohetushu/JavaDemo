@@ -1,0 +1,236 @@
+线程：进程中独立运行的子任务         多线程：程序同时完成多件子任务
+
+进程与线程区别：
+1、进程是程序运行和资源分配的基本单位，一个程序至少有一个进程，一个进程至少有一个线程
+2、进程在执行过程中拥有独立的内存单元，而多个线程共享内存资源，减少切换次数，从而效率更高。
+3、线程是进程的一个实体，是cpu调度和分派的基本单位，是比程序更小的能独立运行的基本单位。同一进程中的多个线程之间可以并发执行
+
+实现多线程编程的方式：
+1、继承 Thread 类：那么 NewThreadName 就为线程的主体
+public class NewThreadName extends Thread{  //没有返回值
+    //NewThreadName 类继承自 Thread 类
+    @Override
+    public void run() {  //线程主体方法
+        //线程的执行代码在这里
+    }
+}
+启动线程：new NewThreadName().start();
+注：如果 start() 方法调用一个已经启动的线程，系统将会抛出 IllegalThreadStateException 异常
+注：在使用多线程技术时，使用 start 方法而不是 run 方法 启动，代码的运行结果与代码执行顺序或调用顺序无关
+
+2、实现 Runnable 接口：
+    java.lang.Runnable 接口定义：
+    @FunctionalInterface
+    public interface Runnable {
+        void run();
+    }
+public class MyRunnable implements Runnable{
+    @Override
+    public void run(){
+        //线程的执行代码在这里
+    }
+}
+启动线程：new Thread(new MyRunnable()).start();
+注：实现 Runnable 接口的程序会创建一个 Thread 对象，并将 Runnable 对象与 Thread 对象相关联
+1、public Thread(Runnable r);
+2、public Thread(Runnable r,String name);
+注：要启动一个新的线程，不是直接调用 Thread  子类对象的 run() 方法，而是调用 Thread 子类的 start() 方法
+
+3、通过 Callable 和 Future 创建线程：
+    java.util.concurrent.Callable 接口定义：
+    @FunctionalInterface
+    public interface Callable<V>{
+        public V call() throws Exception;
+    }
+    1. 创建 Callable 接口的实现类，并实现 call() 方法，该 call() 方法将作为线程执行体，并且有返回值。
+        public class MyCaller implements Callable<T>{   //T 为返回值类型
+            @Override
+            public T call() throws Exception {
+                //线程的执行代码在这里
+                return "这是线程类 MyCaller";
+            }
+        }
+    2. 创建 Callable 实现类的实例，使用 FutureTask 类来包装 Callable 对象，该 FutureTask 对象封装了该 Callable 对象的 call() 方法的返回值。
+        MyCaller myCaller = new MyCaller();
+        FutureTask<T> futureTask = new FutureTask<>(myCaller);  //T 为实现Callable时确定的类型
+    3. 使用 FutureTask 对象作为 Thread 对象的 target 创建并启动新线程。
+        Thread thread1 = new Thread(futureTask);
+        thread.start();
+    4. 调用 FutureTask 对象的 get() 方法来获得子线程执行结束后的返回值
+       System.out.println("线程的返回值：" + futureTask.get());
+
+注：任何情况下，多线程的启动只有一种方法：Thread 类中的 start() 方法
+
+
+线程生命周期：
+1、出生状态：new Thread() 用户在创建线程时所处的状态，在用户使用该线程实例调用 start() 方法之前，线程都处于出生状态。
+2、就绪状态：也称可执行状态，当用户调用 start() 方法之后，线程处于就绪状态，等待系统资源调度。
+3、运行状态：当线程得到系统资源后进入运行状态。
+4、等待状态：当处于运行状态下的线程调用 Thread 类的 wait() 方法时，该线程就会进入等待状态，同时释放对象的机锁，使得其他线程能够访问。
+进入等待状态的线程必须调用 Thread 类的 notify() 方法才能被唤醒。notifyAll() 方法是将所有处于等待状态下的线程唤醒。
+5、休眠状态：当线程调用 Thread 类中的 sleep() 方法时，则会进入休眠状态，让出执行机会给其他线程，等到休眠时间结束后，线程进入就绪状态和其他线程一起竞争cpu的执行时间。
+不能改变对象的机锁，当一个 synchronized 块中调用了sleep() 方法，线程虽然进入休眠，但是对象的机锁没有被释放，其他线程依然无法访问这个对象
+6、阻塞状态：如果一个线程在运行状态下发出输入/输出请求，该线程将进入阻塞状态，在其等待输入/输出结束时，线程进入就绪状态。
+对阻塞的线程来说，即使系统资源关闭，线程依然不能回到运行状态。
+7、死亡状态：当线程的 run() 方法执行完毕，线程进入死亡状态
+注：一旦线程进入可执行状态，它会在就绪状态与运行状态下辗转，同时也可能进入等待状态、休眠状态、阻塞状态或死亡状态
+
+
+线程常用方法：
+1、isAlive() 方法：判断当前的线程是否处于活动状态
+活动状态是线程已经启动且尚未终止。线程处于正在运行或准备开始运行的状态，就认为线程是“存活”的
+2、sleep() 方法：在指定的毫秒数内让当前“正在执行的线程”休眠（暂停执行），//休眠的特点是可以自动实现线程的唤醒
+“正在执行的线程”是指 this.currentThread() 返回的线程
+  public static native void sleep(long millis) throws InterruptedException; //InterruptedException：中断异常，必须处理的异常，否则编译不会通过
+  public static void sleep(long millis, int nanos) throws InterruptedException
+  注：如果有多个线程对象，由于线程有优先级的缘故，线程休眠与自动唤醒会有先后顺序
+3、getId() 方法：取得正在运行线程的唯一标识
+4、yieId() 方法：放弃当前的 CPU 资源，将它让给其他的任务去占用 CPU 执行时间
+注：放弃时间不确定，也可能立马再次获取 CPU 资源
+5、强制执行：public final void join() throws InterruptedException; 使当前线程独占CPU，直到该线程运行结束
+   在其他线程的 run 方法中，强制执行线程对象.join()  //强制执行
+6、线程的礼让：当前线程让出资源给其他线程，yield() 方法调用一次，礼让一次
+   public static native void yield();
+7、守护线程：守护线程运行在后台
+   设置为守护线程：public final void setDaemon(boolean on);
+   判断是否为守护线程：public final boolean isDaemon();
+   注：守护线程伴随着整个程序的运行，当程序运行完毕，守护线程也就停止了
+   注：在 JVM 中，最大的守护线程是 GC 线程，垃圾回收（Garbage Collection,GC）器
+
+
+
+线程优先级：线程的优先级范围是 1~10，值必须在 1~10，默认值为 5
+setPriority() 方法：设置线程的优先级
+    public final void setPriority(int newPriority);
+        public static final int MAX_PRIORITY = 10;
+        public static final int NORMAL_PRIORITY = 5;
+        public static final int MIN_PRIORITY = 1;
+getPriority() 方法：获取当前线程的优先级
+    public final int getPriority();
+
+
+
+判断线程是不是停止状态：
+1、this.interrupted()：测试当前线程是否已经中断。
+注：当前线程是指运行 this.interrupted() 方法的线程
+注：interrupted() 方法具有清除状态的功能，如果连续两次调用该方法，第二次调用 interrupted() 方法返回的值必是 false
+注：测试当前线程是否已经是中断状态，执行后具有将状态标识清除为 false 的功能
+2、this.isInterrupted()：测试线程是否已经中断
+注：测试线程 Thread 对象是否已经是中断状态，但不清除状态标识
+
+
+终止正在运行的线程：
+1、使用退出标识，使线程正常退出，也就是当 run() 方法完成后线程终止。
+2、使用 interrupt() 方法中断线程
+注：调用 interrupt() 方法仅仅是在当前线程中打了一个停止的标记，并不是真的停止线程
+3、异常法停止线程：
+主线程中：thread.interrupt();
+run 方法中：
+if (currentThread().isInterrupted()){  //或者 interrupted()
+    //当线程处于停止状态后，代码继续执行将会拋出 InterruptedException 异常
+    throw new InterruptedException();
+}
+4、在休眠中停止：如果在休眠状态下停止某一线程则会拋出 InterruptedException 异常
+5、使用 return 停止线程：将 interrupt() 方法与 return 结合使用来实现停止线程
+主线程中：thread.interrupt();
+run 方法中：
+if (interrupted()){  //或者 currentThread().isInterrupted()
+    //当线程处于停止状态后，代码继续执行将会拋出 InterruptedException 异常
+    return;
+}
+注：建议使用“拋异常”的方法来实现线程的停止，因为在 catch 块中可以将异常向上拋，使线程停止的事件得以传播
+
+
+
+暂停/挂起线程（suspend()）和恢复线程（resume()）：
+使用 suspend() 方法暂停线程，使用 resume() 方法恢复线程的执行
+注：在使用 suspend() 方法与 resume() 方法时，如果使用不当极易造成公共的同步对象被独占，从而使得其他线程无法访问公共同步对象
+注：在使用 suspend() 方法与 resume() 方法时也容易出现因为线程的暂停而导致数据不同步的情况
+
+
+
+线程锁状态：无状态锁，偏向锁，轻量级锁和重量级锁状态，这几个状态会随着竞争情况逐渐升级。
+注：锁可以升级但不能降级
+
+
+同步机制：synchronized  同步机制，指的是多个线程同时作用在一个对象上，应该保持对象数据的统一性和整体性
+非线程安全：主要指多个线程对同一个对象中的同一个实例变量进行操作时会出现值被更改、值不同步的情况，进而影响程序的执行流程
+解决方法：
+1、同步方法： 使用 synchronized 关键字修饰方法，即不允许多个线程同时修改同一个变量
+    public synchronized 类型名称 方法名称(){
+        //线程执行代码
+    }
+2、同步块：  对于同步块，synchronized 获取的是参数中的对象锁
+    synchronized(obj){  //当线程执行到这里的同步块时，必须获取 obj 这个对象的锁才能执行同步块，否则线程只能等待获得锁
+        //obj，一般为线程对象，如果是当前线程，则为this
+        //线程执行代码
+    }
+注：同步会降低程序运行的性能
+
+
+死锁：指两个或两个以上的进程在执行过程中，由于竞争资源或者由于彼此通信而造成的一种阻塞的现象
+若无外力作用，它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁，这些永远在互相等待的进程称为死锁进程
+
+死锁的四个必要条件：
+互斥条件：进程对所分配到的资源不允许其他进程进行访问，若其他进程访问该资源，只能等待，直至占有该资源的进程使用完成后释放该资源
+请求和保持条件：进程获得一定的资源之后，又对其他资源发出请求，但是该资源可能被其他进程占有，此时请求阻塞，但又对自己获得的资源保持不放
+不可剥夺条件：是指进程已获得的资源，在未完成使用之前，不可被剥夺，只能在使用完后自己释放
+环路等待条件：是指进程发生死锁后，若干进程之间形成一种头尾相接的循环等待资源关系
+
+
+线程安全在三个方面体现：
+原子性：提供互斥访问，同一时刻只能有一个线程对数据进行操作，（atomic,synchronized）；
+可见性：一个线程对主内存的修改可以及时地被其他线程看到，（synchronized,volatile）；
+有序性：一个线程观察其他线程中的指令执行顺序，由于指令重排序，该观察结果一般杂乱无序，（happens-before原则）
+
+
+
+synchronized 和 volatile 的区别：
+1、volatile 表明当前变量在寄存器（工作内存）中的值是不确定的，需要从主内存中读取；
+  synchronized 则是锁定当前变量，只有当前线程可以访问该变量，其他线程被阻塞住。
+2、volatile 仅能使用在变量级别；
+  synchronized 则可以使用在变量、方法、同步块和类级别的。
+3、volatile 仅能实现变量的修改可见性，不能保证原子性；
+  synchronized 则可以保证变量的修改可见性和原子性。
+4、volatile 不会造成线程的阻塞；
+  synchronized 可能会造成线程的阻塞。
+5、volatile 标记的变量不会被编译器优化；
+  synchronized 标记的变量可以被编译器优化
+
+synchronized 和 Lock 区别：
+1、synchronized 是 java 内置关键字；
+  在jvm层面，Lock 是 java 类；
+2、synchronized 无法判断是否获取锁的状态，
+  Lock可以判断是否获取到锁；
+3、synchronized 会自动释放锁(a 线程执行完同步代码会释放锁 ；b 线程执行过程中发生异常会释放锁)，
+  Lock需在 finally 中手工释放锁（unlock() 方法释放锁），否则容易造成线程死锁；
+4、用 synchronized 关键字的两个线程1和线程2，如果当前线程1获得锁，线程2线程等待。如果线程1阻塞，线程2则会一直等待下去，
+  而 Lock 锁就不一定会等待下去，如果尝试获取不到锁，线程可以不用一直等待就结束了；
+5、synchronized 锁可重入、不可中断、非公平；
+  Lock 锁可重入、可判断、可公平（两者皆可）；
+6、Lock 锁适合大量同步的代码的同步问题；
+  synchronized 锁适合代码少量的同步问题
+
+
+
+线程池
+创建线程池：Executors创建线程池
+1、Executors.newFixedThreadPool(int nThreads)：创建一个固定长度的线程池
+每当提交一个任务就创建一个线程，直到达到线程池的最大数量，这时线程规模将不再变化，当线程发生未预期的错误而结束时，线程池会补充一个新的线程
+2、Executors.newCachedThreadPool()：创建一个可缓存的线程池
+如果线程池的规模超过了处理需求，将自动回收空闲线程，而当需求增加时，则可以自动添加新线程，线程池的规模不存在任何限制
+3、Executors.newSingleThreadExecutor()：一个单线程的Executor，
+创建单个工作线程来执行任务，如果这个线程异常结束，会创建一个新的来替代它；它的特点是能确保依照任务在队列中的顺序来串行执行
+4、Executors.newScheduledThreadPool(int corePoolSize)：创建了一个固定长度的线程池，而且以延迟或定时的方式来执行任务，类似于Timer。
+
+线程池状态：Running、ShutDown、Stop、Tidying、Terminated
+          shutdown()    ->    ShutDown     队列为空，并且线程池中执行的任务也为空
+Running                                                                         Tidying     terminated()  ->  Terminated
+          shutdownNow() ->    Stop         线程池中执行的任务为空
+
+
+
+
+
+
+

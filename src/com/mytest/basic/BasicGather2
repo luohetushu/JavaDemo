@@ -1,0 +1,164 @@
+数据结构
+
+位集合（BitSet）：实现一组可以单独设置和清除的位或标志，对布尔值的操作
+大小可动态改变, 取值为true或false的位集合。用于表示一组布尔标志
+
+BitSet 类构造方法：
+1、BitSet()  创建一个默认的对象，所有位初始化为false
+2、BitSet(int size)  指定初始大小的对象。所有位初始化为false
+注：创建对象后，BitSet bits = new BitSet(); bits.get(index)默认为false (index >= 0)
+注：System.out.println(bits); 打印为{index1, index2, ...}，其中index为 位 为true的索引值；若所有 位 都为false，则打印为 {}
+
+BitSet 类常用方法：
+1、void set(int index)：将指定索引处的位设置为 true
+   void set(int index, boolean v)：将指定索引处的位设置为指定的值v
+   void set(int startIndex, int endIndex)：将指定的 fromIndex（包括）到指定的 toIndex（不包括）范围内的位设置为 true
+   void set(int startIndex, int endIndex, boolean v)：将指定的 fromIndex（包括）到指定的 toIndex（不包括）范围内的位设置为指定的值v
+2、boolean get(int index)：返回指定索引处的位值
+   BitSet get(int startIndex, int endIndex)：返回一个新的 BitSet，它由此 BitSet 中从 fromIndex（包括）到 toIndex（不包括）范围内的位组成
+   如：bits2  //{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14}
+      bits2.get(4, 11) //{0, 2, 3, 4, 5}  新的 BitSet 从0开始
+3、void clear()：将此 BitSet 中的所有位设置为 false。
+   void clear(int index)：将索引指定处的位设置为 false。
+   void clear(int startIndex, int endIndex)：将指定的 startIndex（包括）到指定的 toIndex（不包括）范围内的位设置为 false
+4、void flip(int index)：将指定索引处的位取反。
+   void flip(int startIndex, int endIndex)：将指定的 fromIndex（包括）到指定的 toIndex（不包括）范围内的每个位取反
+5、void and(BitSet set)：对此目标位 set 和参数位 set 执行逻辑与操作，结果作为原目标位的新值
+   void or(BitSet set)：对此目标位 set 和参数位 set 执行逻辑或操作，结果作为原目标位的新值
+   void xor(BitSet set)：对此目标位 set 和参数位 set 执行逻辑异或操作，结果作为原目标位的新值
+6、void andNot(BitSet set)：清除此目标位 set 中与参数位 set 相同索引值的 位 ，结果作为原目标位的新值
+7、int size()：返回此 BitSet 表示位值时实际使用空间的位数，一般返回 64
+   int length()：返回此 BitSet 的"逻辑大小"：BitSet 中最高设置位的索引加 1     注：新对象创建时length为0
+   如：bits2  //{1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14}
+      bits.length() //15 (14 + 1)
+8、int cardinality()：返回此 BitSet 中设置为 true 的位数
+9、boolean intersects(BitSet bitSet)：如果此目标位 set 与参数位 bitSet 中有相同的索引值，则返回true
+10、boolean isEmpty()：如果此 BitSet 中没有包含任何设置为 true 的位，则返回 true
+11、int nextClearBit(int startIndex)：返回 startIndex 索引后第一个设置为 false 的位的索引，包括此 startIndex 索引
+    int nextSetBit(int startIndex)：返回 startIndex 索引后第一个设置为 true 的位的索引，包括此 startIndex 索引
+
+
+
+
+向量（Vector）：大小能根据需要动态的变化
+实现了一个动态数组。和 ArrayList 很相似        注：Vector 是同步访问的
+
+Vector 类构造方法：
+1、Vector()：创建一个默认的向量，默认容量大小为 10
+   Vector vec = new Vector(); 或者 Vector<String> vec = new Vector<>();
+2、Vector(int capacity)：创建指定容量大小的向量
+3、Vector(int capacity, int incr)：创建指定容量大小的向量，并且增量用 incr 指定。增量表示向量元素数目大于容量时，容量每次扩容的量
+4、Vector(Collection c)：创建一个包含集合 c 元素的向量
+
+Vector 类常用方法：
+1、boolean add(Object o) ：将指定元素添加到此向量的末尾
+   void add(int index, Object element) ：在此向量的指定位置插入指定的元素
+   void addElement(Object obj) ：将指定的组件添加到此向量的末尾
+2、Object remove(int index) ：移除此向量中指定位置的元素。
+  boolean remove(Object o) ：移除此向量中指定元素的第一个匹配项，如果向量不包含该元素，则元素保持不变。
+  boolean removeAll(Collection c) ：从此向量中移除包含在指定 Collection 中的所有元素。
+  void removeAllElements() ：从此向量中移除全部组件，并将其大小设置为零。
+  boolean removeElement(Object obj) ：从此向量中移除变量的第一个（索引最小的）匹配项。
+  void removeElementAt(int index) ：删除指定索引处的组件。
+  protected void removeRange(int fromIndex, int toIndex)：从此 List 中移除其索引位于 fromIndex（包括）与 toIndex（不包括）之间的所有元素
+3、Object set(int index, Object element)：用指定的元素替换此向量中指定位置处的元素。
+  void setElementAt(Object obj, int index) ：将此向量指定 index 处的组件设置为指定的对象。
+  void insertElementAt(Object obj, int index) ：将指定对象作为此向量中的组件插入到指定的 index 处
+  void setSize(int newSize) ：设置此向量的大小
+4、Object firstElement() ：返回此向量的第一个组件（位于索引 0) 处的项）。
+  Object lastElement() ：返回此向量的最后一个组件
+  Object get(int index) ：返回向量中指定位置的元素。
+  int indexOf(Object elem) ：返回此向量中第一次出现的指定元素的索引，如果此向量不包含该元素，则返回 -1。
+  int indexOf(Object elem, int index) ：返回此向量中第一次出现的指定元素的索引，从 index 处正向搜索，如果未找到该元素，则返回 -1
+  int lastIndexOf(Object elem) ：返回此向量中最后一次出现的指定元素的索引；如果此向量不包含该元素，则返回 -1。
+  int lastIndexOf(Object elem, int index) ：返回此向量中最后一次出现的指定元素的索引，从 index 处逆向搜索，如果未找到该元素，则返回 -1
+5、Object[] toArray()：返回一个数组，包含此向量中以恰当顺序存放的所有元素。
+  Object[] toArray(Object[] a) ：返回一个数组，包含此向量中以恰当顺序存放的所有元素；返回数组的运行时类型为指定数组的类型
+6、int capacity() ：返回此向量的当前容量
+  void trimToSize() ：对此向量的容量进行微调，使其等于向量的当前大小
+  void ensureCapacity(int minCapacity) ：增加此向量的容量（如有必要），以确保其至少能够保存最小容量参数指定的组件数
+7、void copyInto(Object[] anArray) ：将此向量的组件复制到指定的数组中
+8、Enumeration elements() ：返回此向量的组件的枚举
+  如：Enumeration vEnum = v.elements();
+     while(vEnum.hasMoreElements())
+        System.out.print(vEnum.nextElement() + " ");
+
+
+
+
+属性（Properties）
+Properties 继承于 Hashtable.Properties 类，表示一个持久的属性集，属性列表中每个键及其对应值都是一个字符串
+
+Properties 类构造方法：
+1、Properties()
+2、Properties(Properties propDefault)  使用propDefault 作为默认值
+
+Properties 类常用方法：
+1、String getProperty(String key)：用指定的键在此属性列表中搜索属性。
+  String getProperty(String key, String defaultProperty)：用指定的键在属性列表中搜索属性。
+2、void list(PrintStream streamOut)：将属性列表输出到指定的输出流。
+  void list(PrintWriter streamOut)：将属性列表输出到指定的输出流。
+3、void load(InputStream streamIn) throws IOException：从输入流中读取属性列表（键和元素对）。
+4、Enumeration propertyNames()：按简单的面向行的格式从输入字符流中读取属性列表（键和元素对）。
+   如：Enumeration names = properties1.propertyNames();
+     while (names.hasMoreElements()){
+         String str = (String) names.nextElement();
+         System.out.println("The capital of " + str + " is " + properties1.getProperty(str) + ".");
+     }
+5、Object setProperty(String key, String value)：调用 Hashtable 的方法 put。
+6、void store(OutputStream streamOut, String description)
+   以适合使用 load(InputStream)方法加载到 Properties 表中的格式，将此 Properties 表中的属性列表（键和元素对）写入输出流
+
+
+
+
+栈（Stack） Vector 子类
+栈（Stack）实现了一个后进先出（LIFO）的数据结构
+
+Stack 类构造函数：
+1、Stack stack = new Stack();  或者 Stack<String> vec = new Stack<>();
+
+Stack 类常用方法：
+1、boolean empty()               测试堆栈是否为空。
+2、Object peek( )                查看堆栈顶部的对象，但不从堆栈中移除它。
+3、Object pop( )                 移除堆栈顶部的对象，并作为此函数的值返回该对象。
+4、Object push(Object element)   把项压入堆栈顶部。
+5、int search(Object element)    返回对象在堆栈中的位置，以 1 为基数
+
+
+
+
+字典（Dictionary）  用来存储键/值对，作用和Map类相似       现在更多使用 Map 类
+字典（Dictionary） 类是一个抽象类，定义了键映射到值的数据结构。
+注：当想要通过特定的键而不是整数索引来访问数据的时候，这时应该使用Dictionary
+
+
+HashMap： HashMap是基于哈希表的Map接口的非同步实现
+1、HashMap 类实现提供所有可选的映射操作，并允许使用null值和null键
+2、HashMap 类不保证映射的顺序，并不保证该顺序恒久不变
+3、HashMap 是一个“链表散列”的数据结构，即数组和链表的结合体
+String put(Object key, Object value)  根据key的hashcode计算hash值,根绝hash值得到这个元素在数组中的位置(下标)
+   如果该数组在该位置上已经存放其他元素,那么在该位置上的元素将以链表的形式存放,新加入的放在链头,最先加入的放入链尾
+   如果数组中该位置没有元素,就直接将该元素放到数组的该位置上
+   注：当链表中的节点数据超过八个之后,该链表会转为红黑树来提高查询效率,从原来的O(n)到O(logn)
+
+哈希表（Hashtable）   HashMap类很相似，但它支持同步
+注：当使用一个哈希表，要指定用作键的对象，以及要链接到该键的值
+
+Hashtable 类构造方法：
+1、Hashtable()
+2、Hashtable(int size)  创建指定容量大小的哈希表
+3、Hashtable(int size,float fillRatio) 创建了一个指定容量大小的哈希表，并且通过fillRatio指定填充比例
+填充比例必须介于0.0和1.0之间，决定了哈希表在重新调整大小之前的充满程度
+4、Hashtable(Map m)  创建了一个以M中元素为初始化元素的哈希表
+哈希表的容量被设置为M的两倍。
+
+HashMap 和 Hashtable 区别：
+1、hashMap去掉了HashTable 的contains方法，但是加上了containsValue（）和containsKey（）方法。
+2、hashTable同步的，而HashMap是非同步的，效率上逼hashTable要高。
+3、hashMap允许空键值，而hashTable不允许
+
+
+
+
+

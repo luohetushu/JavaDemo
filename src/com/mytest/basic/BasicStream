@@ -1,0 +1,258 @@
+数据流    在 Java 中所有数据都是使用流读写的
+数据流相关的类都封装在 java.io 包中，且每个数据流都是一个对象
+
+数据流是 Java 进行 I/O 操作的对象，按照不同的标准分为不同的类别：
+1、按照流的方向主要分为输入流和输出流两大类。
+    输入流：InputStream(字节输入流)、Reader(字符输入流)
+    输出流：OutputStream(字节输入流)、Writer(字符输入流)
+2、数据流按照数据单位的不同分为字节流和字符流。
+   字节流：字节流按 8 位传输以字节为单位输入输出数据
+   字符流：字符流按 16 位传输以字符为单位输入输出数据
+3、按照功能可以划分为节点流和处理流
+
+数据流的处理只能按照数据序列的顺序来进行，即前一个数据处理完之后才能处理后一个数据
+
+BIO：Block IO 同步阻塞式 IO，即平常使用的传统 IO，特点是模式简单使用方便，并发处理能力低。
+NIO：New IO 同步非阻塞 IO，是传统 IO 的升级，客户端和服务器端通过 Channel（通道）通讯，实现了多路复用。
+AIO：Asynchronous IO 是 NIO 的升级，也叫 NIO2，实现了异步非堵塞 IO ，异步 IO 的操作基于事件和回调机制
+
+
+输入流
+所有输入流类都是 InputStream 抽象类（字节输入流）和 Reader 抽象类（字符输入流）的子类
+
+InputStream 类是字节输入流的抽象类，是所有字节输入流的父类
+Reader 类是字符输入流的抽象类，是所有字符输入流的父类
+
+Java 中的字符是 Unicode 编码，即双字节，而 InputStream 是用来处理单字节的，在处理字符文本时则使用文本输入流 Reader 类
+
+InputStream 类（字节输入流）层次结构：子类
+FileInputStream（文件输入流）：从文件中读取数据
+PipedInputStream（管道输入流）：连接到一个 PipedOutputStream（管道输出流）
+ObjectInputStream（对象输入流）：将对象反序列化
+SequenceInputStream（顺序输入流）：将多个字节输入流串联成一个字节输入流
+ByteArrayInputStream（字节数组输入流）：将字节数组转换为字节输入流，从中读取字节
+FilterInputStream（过滤器输入流）、StringBufferInputStream（缓冲字符串输入流）
+FilterInputStream 类（过滤器输入流）子类：
+PushBackInputStream（回压输入流）、BufferedInputStream（缓冲输入流）、DataInputStream（数据输入流）
+
+InputStream 类中所有方法遇到错误时都会引发 IOException 异常
+
+InputStream 类（字节输入流）常用方法：
+int read()：                        从输入流读入一个 8 字节的数据，将它转换成一个 0~255 的整数，返回一个整数，如果遇到输入流的结尾返回 -1。
+int read(byte[] b)：                从输入流读取若干字节的数据保存到参数 b 指定的字芳数组中，返回的字芾数表示读取的字节数，如果遇到输入流的结尾返回 -1。
+int read(byte[] b,int off,int len)：从输入流读取若干字节的数据保存到参数 b 指定的字节数组中，其中 off 是指在数组中开始保存数据位置的起始下标，
+                                    len 是指读取字节的位数。返回的是实际读取的字节数，如果遇到输入流的结尾则返回 -1。
+void close()：                      关闭数据流，当完成对数据流的操作之后需要关闭数据流。
+int available()：                   返回可以从数据源读取的数据流的位数。
+long skip(long n)：                 从输入流跳过参数 n 指定的字节数目。该方法返回跳过的字节数
+boolean markSupported()：           判断输入流是否可以重复读取，如果可以就返回 true。
+void mark(int readLimit)：          如果输入流可以被重复读取，从流的当前位置开始设置标记，readLimit 指定可以设置标记的字节数。
+void reset()：                      使输入流重新定位到刚才被标记的位置，这样可以重新读取标记过的数据
+
+ByteArrayInputStream 类：字节数组输入流
+1、ByteArrayInputStream(byte[] buf)：创建一个字节数组输入流，字节数组类型的数据源由参数 buf 指定。
+2、ByteArrayInputStream(byte[] buf,int offset,int length)：创建一个字节数组输入流，其中参数 buf 指定字节数组类型的数据源，
+                                                          offset 指定在数组中开始读取数据的起始下标位置，length 指定读取的元素个数
+
+FileInputStream 类：文件输入流
+通过使用 FileInputStream 可以访问文件中的一个字节、一批字节或整个文件
+1、FileInputStream(File file)：通过打开一个到实际文件的连接来创建一个 FileInputStream，该文件通过文件系统中的 File 对象 file 指定。
+2、FileInputStream(String name)：通过打开一个到实际文件的链接来创建一个 FileInputStream，该文件通过文件系统中的路径名 name 指定
+注：在创建 FileInputStream 类的对象时，如果找不到指定的文件将拋出 FileNotFoundException 异常，该异常必须捕获或声明拋出
+注：注意：FileInputStream 类重写了父类 InputStream 中的 read() 方法、skip() 方法、available() 方法和 close() 方法，不支持 mark() 方法和 reset() 方法
+
+
+
+Reader 类（字符输入流）层次结构：子类
+CharArrayReader：将字符数组转换为字符输入流，从中读取字符
+BufferedReader（子类：LineNumberReader）：为其他字符输入流提供读缓冲区
+FilterReader（子类：PushBackReader）
+InputStreamReader（子类：FileReader）：将字节输入流转换为字符输入流，可以指定字符编码
+PipedReader：连接到一个 PipedWriter
+StringReader：将字符串转换为字符输入流，从中读取字符
+
+Reader 类（字符输入流）read() 方法：
+int read()	                            从输入流中读取一个字符，并把它转换为 0~65535 的整数。如果返回 -1， 则表示已经到了输入流的末尾。
+                                        为了提高 I/O 操作的效率，建议尽量使 用下面两种 read()方法
+int read(char[] cbuf)	                从输入流中读取若干个字符，并把它们保存到参数 cbuf 指定的字符数组中。
+                                        该方法返回读取的字符数，如果返回 -1，则表示已经到了输入流的末尾
+int read(char[] cbuf,int off,int len)	从输入流中读取若干个字符，并把它们保存到参数 cbuf 指定的字符数组中。
+                                        其中，off 指定在字符数组中开始保存数据的起始下标，len 指定读取的字符数。
+                                        该方法返回实际读取的字符数，如果返回 -1，则表示已经 到了输入流的末尾
+
+FileReader 字符文件输入流：
+1、FileReader(File file)：在给定要读取数据的文件的情况下创建一个新的 FileReader 对象。file 表示要从中读取数据的文件。
+2、FileReader(String fileName)：在给定从中读取数据的文件名的情况下创建一个新 FileReader 对象。fileName 表示要从中读取数据的文件的名称，表示的是一个文件的完整路径
+
+BufferedReader 类：字符缓冲区输入流
+1、BufferedReader(Reader in)：创建一个 BufferedReader 来修饰参数 in 指定的字符输入流。
+2、BufferedReader(Reader in,int size)：创建一个 BufferedReader 来修饰参数 in 指定的字符输入流，参数 size 则用于指定缓冲区的大小，单位为字符
+注：BufferedReader 类主要用于辅助其他字符输入流，可以先将一批数据读到内存缓冲区。之后直接从缓冲区中获取数据，来提高数据的读取效率
+
+
+
+输出流
+所有输出流类都是 OutputStream 抽象类（字节输出流）和 Writer 抽象类（字符输出流）的子类
+
+OutputStream 类是字节输出流的抽象类，是所有字节输出流的父类
+Writer 类是字符输出流的抽象类，是所有字符输出流的父类
+
+OutputStream 类（字节输出流）层次结构：子类
+FileOutputStream（文件输出流）：向文件中写数据
+PipedOutputStream（管道输出流）：连接到一个 PipedInputStream（管道输入流）
+ObjectOutputStream（对象输出流）：将对象序列化
+ByteArrayOutputStream（字节数组输出流）：向内存缓冲区的字节数组中写数据
+FilterOutputStream（过滤器输出流）
+FilterOutputStream 类（过滤器输出流）子类：
+PrintStream（打印输出流）、BufferedOutputStream（缓冲输出流）、DataOutputStream（数据输出流）
+
+OutputStream 类（字节输出流）常用方法：
+int write (b)：                       将指定字节的数据写入到输出流。
+int write (byte[] b)：                将指定字节数组的内容写入输出流。
+int write (byte[] b,int off,int len)：将指定字节数组从 off 位置开始的 len 字节的内容写入输出流。
+close()：                             关闭数据流，当完成对数据流的操作之后需要关闭数据流。
+flush()：                             刷新输出流，强行将缓冲区的内容写入输出流
+
+ByteArrayOutputStream 类：字节数组输出流
+1、ByteArrayOutputStream()：创建一个字节数组输出流，输出流缓冲区的初始容量大小为 32 字节。
+2、ByteArrayOutputStream(int size)：创建一个字节数组输出流，输出流缓冲区的初始容量大小由参数 size 指定
+ByteArrayOutputStream 类方法：
+int size()：返回缓冲区中的当前字节数。
+byte[] toByteArray()：以字节数组的形式返回输出流中的当前内容
+
+FileOutputStream 类：文件输出流
+1、FileOutputStream(File file)：创建一个文件输出流，参数 file 指定目标文件。
+2、FileOutputStream(File file, boolean append)：创建一个文件输出流，参数 file 指定目标文件，
+append 指定是否将数据添加到目标文件的内容末尾，如果为 true，则在末尾添加；如果为 false，则覆盖原有内容；其默认值为 false。
+3、FileOutputStream(String name)：创建一个文件输出流，参数 name 指定目标文件的文件路径信息。
+4、FileOutputStream(String name,boolean append)：创建一个文件输出流，参数 name 和 append 的含义同上
+注：在创建 FileOutputStream 类的对象时，如果指定的文件不存在，则创建一个新文件；如果文件已存在，则清除原文件的内容重新写入
+注：目标文件可以不存在，但目标文件所在目录必须存在，否则会拋出 java.io.FileNotFoundException 异常
+注：目标文件的名称不能是已存在的目录，否则抛出 java.io.FileNotFoundException 异常
+
+
+
+Writer 类（字符输出流）层次结构：子类
+CharArrayWriter 类：向内存缓冲区的字符数组写数据。
+StringWriter 类：向内存缓冲区的字符串（StringBuffer）写数据。
+BufferedWriter 类：为其他字符输出流提供写缓冲区。
+PipedWriter 类：连接到一个 PipedReader。
+OutputStreamWriter（子类：FileWriter） 类：将字节输出流转换为字符输出流，可以指定字符编码
+FilterWriter：
+
+Writer 类（字符输出流） write() 方法和 append() 方法：
+void write(int c)	                        向输出流中写入一个字符
+void write(char[] cbuf)	                    把参数 cbuf 指定的字符数组中的所有字符写到输出流中
+void write(char[] cbuf,int off,int len)	    把参数 cbuf 指定的字符数组中的若干字符写到输出流中。off 指定字符数组中的起始下标，len 表示元素个数
+void write(String str)	                    向输出流中写入一个字符串
+void write(String str, int off,int len)	    向输出流中写入一个字符串中的部分字符。off 指定字符串中的起始偏移量，len 表示字符个数
+append(char c)	                            将参数 c 指定的字符添加到输出流中
+append(charSequence esq)	                将参数 esq 指定的字符序列添加到输出流中
+append(charSequence esq,int start,int end)	将参数 esq 指定的字符序列的子序列添加到输出流中。start 指定子序列的第一个字符的索引，
+                                            end 指定子序列中最后一个字符后面的字符的索引，也就是说子序列的内容包含 start 索引处的字符，但不包括 end索引处的字符
+
+FileWriter 字符文件输出流：
+1、FileWriter(File file)：在指定 File 对象的情况下构造一个 FileWriter 对象。file 表示要写入数据的 File 对象。
+2、FileWriter(File file, boolean append)：在指定 File 对象的情况下构造一个 FileWriter 对象，
+如果 append 的值为 true，则将字节写入文件末尾，而不是写入文件开始处。
+3、FileWriter(String fileName)：在指定文件名的情况下构造一个 FileWriter 对象。fileName 表示要写入字符的文件名，表示的是完整路径。
+4、FileWriter(String fileName,boolean append)：在指定文件名以及要写入文件的位置的情况下构造 FileWriter 对象。
+append 是一个 boolean 值，如果为 true，则将数据写入文件末尾，而不是文件开始处
+注：FileWriter 类的创建不依赖于文件存在与否，如果关联文件不存在，则会自动生成一个新的文件。
+注：在创建文件之前，FileWriter 将在创建对象时打开它作为输出。如果试图打开一个只读文件，将引发一个 IOException 异常
+
+BufferedWriter 类：字符缓冲区输出流
+1、BufferedWriter(Writer out)：创建一个 BufferedWriter 来修饰参数 out 指定的字符输出流。
+2、BufferedWriter(Writer out,int size)：创建一个 BufferedWriter 来修饰参数 out 指定的字符输出流，参数 size 则用于指定缓冲区的大小，单位为字符
+注：BufferedWriter 类主要用于辅助其他字符输出流，先将一批数据写入缓冲区，再将缓冲区的数据一次性写到字符输出流，以提高数据的写效率
+
+
+系统流     系统流对应的类为 java.lang.System
+系统流，分别通过 in、out 和 err 变量来引用：
+System.in：标准输入流，默认设备是键盘            System.in 是 InputStream 类的一个对象
+System.out：标准输出流，默认设畜是控制台         System.out 和 System.error 是 PrintStream 类的对象
+System.err：标准错误流，默认设备是控制台
+
+
+
+File 类（文件操作类）     File 类是文件和目录路径名的抽象形式
+File 类是 java.io 包中唯一代表磁盘文件本身的对象
+File 类不具有从文件读取信息和向文件写入信息的功能，仅描述文件本身的属性
+
+File 类构造方法：
+File(File parent,String child)：根据 parent 抽象路径名和 child 路径名字符串创建一个新 File 实例。
+File(String pathname)：通过将给定路径名字符串转换成抽象路径名来创建一个新 File 实例。如果给定字符串是空字符串，则结果是空的抽象路径名。
+File(String parent,String child)：根据 parent 路径名字符串和 child 路径名字符串创建一个新 File 实例
+
+File 类常用方法：
+boolean canRead()	             测试应用程序是否能从指定的文件中进行读取
+boolean canWrite()	             测试应用程序是否能写当前文件
+boolean delete()	             删除当前对象指定的文件 .
+boolean exists()	             测试当前 File 是否存在
+String getAbsolutePath()	     返回由该对象表示的文件的绝对路径名
+String getName()	             返回表示当前对象的文件名
+String getParent()	             返回当前 File 对象路径名的父路径名，如果此名没有父路径则为 null
+boolean isAbsolute()	         测试当前 File 对象表示的文件是否为一个绝对路径名
+boolean isDirectory()	         测试当前 File 对象表示的文件是否为一个路径
+boolean isFile()	             测试当前 File 对象表示的文件是否为一个“普通”文件
+public File[] listFiles()        返回当前 File 对象是路径的情况下，当前路径下的所有文件
+long lastModified()	             返回当前 File 对象表示的文件最后修改的时间
+long length()	                 返回当前 File 对象表示的文件长度，以字节（B）为单位
+String[] list()	                 返回当前 File 对象指定的路径文件列表
+String[] list(FilenameFilter)	 返回当前 File 对象指定的目录中满足指定过滤器的文件列表
+boolean mkdir()	                 创建一个目录，它的路径名由当前 File 对象指定
+boolean mkdirs()	             创建一个目录，它的路径名由当前 File 对象指定
+boolean renameTo(File)	         将当前 File 对象指定的文件更名为给定参数 File 指定的路径名
+
+
+
+java.io.File
+java.nio.Files
+
+
+
+RandomAccessFile类：动态读取文件内容        动态读取是指从文件的任意位置开始访问文件
+类中有一个文件指针用于标识当前流的读写位置，指针可以向前或者向后移动
+
+RandomAccessFile 类构造方法:
+RandomAccessFile(File file,String mode)：访问参数 file 指定的文件，访问形式由参数 mode 指定，
+                                         mode 参数有两个常用的可选值r和rw，其中r表示只读，rw表示读写。
+RandomAccessFile(String name,String mode)：访问参数 name 指定的文件，mode 参数的含义同上
+
+RandomAccessFile 类常用方法:
+boolean readBoolean()	        从文件中读取一个 boolean 值
+byte readByte()	                从文件中读取一个带符号位的字节
+char readChar()	                从文件中读取一个字符
+int readInt()	                从文件中读取一个带符号位的整数
+long readLong()	                从文件中读取一个带符号位的 long 值
+String readLine()	            从文件中读取下一行文本
+void seek(long pos)	            指定从文件起始位置开始的指针偏移量
+void writeBoolean(boolean v)	以字节的形式向文件中写入一个 boolean 值
+void writeByte(int v)	        以单字节的形式向文件中写入一个 byte 值
+void writeChar(int v)	        以双字节的形式向文件中写入一个 char 值
+void writeInt(int v)	        以4字节的形式向文件中写入一个整数
+void writeLong(long v)	        以8字节的形式向文件中写入一个 long 值
+void writeBytes(String s)	    以字节序列的形式向文件中写入一个字符串
+void skipBytes(int n)	        以当前文件指针位置为起始点，跳过 n 字节
+
+注：写入中文时，使用write(String.getBytes())，能够正常写入；使用writeBytes(String)、writeChar(String)和writeUTF(String)均产生乱码
+
+
+
+
+序列化与反序列化
+ObjectOutputStream（对象输出流）：将对象序列化
+public final void writeObject(Object x) throws IOException                   序列化一个对象，并将它发送到输出流
+
+ObjectInputStream（对象输入流）：将对象反序列化
+public final Object readObject() throws IOException, ClassNotFoundException  从流中取出下一个对象，并将对象反序列化
+
+类的对象能序列化，必须满足两个条件：
+1、该类必须实现 java.io.Serializable 接口。
+2、该类的所有属性必须是可序列化的。如果有一个属性不是可序列化的，则该属性必须注明是短暂的。
+注：检验一个类的实例是否能序列化十分简单，只需要查看该类有没有实现 java.io.Serializable接口
+注：当序列化一个对象到文件时， 按照 Java 的标准约定是给文件一个 .ser 扩展名
+
+
+
+

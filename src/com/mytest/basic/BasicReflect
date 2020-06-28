@@ -1,0 +1,102 @@
+反射机制 java.lang.reflect
+
+在 ORM 中间件的实现中，运用 java 反射机制可以读取任意一个 JavaBean 的所有属性，或者给这些属性赋值
+
+反射机制功能：
+1、在运行时判断任意一个对象所属的类。
+2、在运行时构造任意一个类的对象。
+3、在运行时判断任意一个类所具有的成员变量和方法。
+4、在运行时调用任意一个对象的方法。
+5、生成动态代理
+
+反射可访问的常用信息：
+类型	             访问方法	                返回值类型	        说明
+包路径	         getPackage()	            Package 对象	        获取该类的存放路径
+类名称	         getName()	                String 对象	        获取该类的名称
+继承类	         getSuperclass()	        Class 对象	        获取该类继承的类
+实现接口	         getInterfaces()	        Class 型数组	        获取该类实现的所有接口
+构造方法	         getConstructors()	        Constructor 型数组	获取所有权限为 public 的构造方法
+构造方法          getDeclaredConstructors()	Constructor 对象	    获取当前对象的所有构造方法
+方法              getMethods()	            Methods 型数组	    获取所有权限为 public 的方法
+方法              getDeclaredMethods()	    Methods 对象	        获取当前对象的所有方法
+成员变量	         getFields()	            Field 型数组	        获取所有权限为 public 的成员变量
+成员变量          getDeclareFields()	        Field 对象	        获取当前对象的所有成员变量
+内部类	         getClasses()	            Class 型数组	        获取所有权限为 public 的内部类
+内部类            getDeclaredClasses()	    Class 型数组	        获取所有内部类
+内部类的声明类	 getDeclaringClass()	    Class 对象	        如果该类为内部类，则返回它的成员类，否则返回 null
+
+调用 getFields() 和 getMethods() 方法时将会依次获取权限为 public 的字段和变量，包含从超类中继承到的成员实量和方法。
+而通过 getDeclareFields() 和 getDeclareMethod()只是获取在本类中定义的成员变量和方法
+
+
+
+通过反射访问构造函数（方法）
+为了动态获取对象构造方法，需要创建一个 Constructor 类型的对象或者数组：
+getConstructors()
+getConstructor(Class<?>…parameterTypes)
+getDeclaredConstructors()
+getDeclaredConstructor(Class<?>...parameterTypes)
+创建的每个 Constructor 对象表示一个构造方法，然后利用 Constructor 对象的方法操作构造方法
+
+Constructor 类常用方法：
+isVarArgs()	                    查看该构造方法是否允许带可变数量的参数，如果允许，返回 true，否则返回false
+getParameterTypes()	            按照声明顺序以 Class 数组的形式获取该构造方法各个参数的类型
+getExceptionTypes()	            以 Class 数组的形式获取该构造方法可能抛出的异常类型
+newInstance(Object … initargs)	通过该构造方法利用指定参数创建一个该类型的对象，如果未设置参数则表示采用默认无参的构造方法
+setAccessible(boolean flag)	    如果该构造方法的权限为 private，默认为不允许通过反射利用 newInstance()方法创建对象。
+                                如果先执行该方法，并将入口参数设置为 true，则允许创建对象
+getModifiers()	                获得可以解析出该构造方法所采用修饰符的整数
+
+通过 java.lang.reflect.Modifier 类可以解析出 getMocMers() 方法的返回值所表示的修饰符信息
+在该类中提供了一系列用来解析的静态方法，既可以查看是否被指定的修饰符修饰，还可以字符串的形式获得所有修饰符
+
+Modifier 类常用方法:
+isStatic(int mod)	    如果使用 static 修饰符修饰则返回 true，否则返回 false
+isPublic(int mod)	    如果使用 public 修饰符修饰则返回 true，否则返回 false
+isProtected(int mod)	如果使用 protected 修饰符修饰则返回 true，否则返回 false
+isPrivate(int mod)	    如果使用 private 修饰符修饰则返回 true，否则返回 false
+isFinal(int mod)	    如果使用 final 修饰符修饰则返回 true，否则返回 false
+toString(int mod)	    以字符串形式返回所有修饰符
+
+
+
+通过反射执行方法（获取方法）
+要动态获取一个对象方法的信息，需要创建一个 Method 类型的对象或者数组：
+getMethods()
+getMethods(String name,Class<?> …parameterTypes)
+getDeclaredMethods()
+getDeclaredMethods(String name,Class<?>...parameterTypes)
+
+Method 类常用方法：
+getName()	                        获取该方法的名称
+getParameterType()	                按照声明顺序以 Class 数组的形式返回该方法各个参数的类型
+getReturnType()	                    以 Class 对象的形式获得该方法的返回值类型
+getExceptionTypes()	                以 Class 数组的形式获得该方法可能抛出的异常类型
+invoke(Object obj,Object...args)	利用 args 参数执行指定对象 obj 中的该方法，返回值为 Object 类型
+isVarArgs()	                        查看该方法是否允许带有可变数量的参数，如果允许返回 true，否 则返回 false
+getModifiers()	                    获得可以解析出该方法所采用修饰符的整数
+
+
+
+通过反射访问成员变量
+访问成员变量时将返回 Field 类型的对象或数组:
+getFields()
+getField(String name)
+getDeclaredFields()
+getDeclaredField(String name)
+
+Field 类常用方法：
+getName()	                        获得该成员变量的名称
+getType()	                        获取表示该成员变量的 Class 对象
+get(Object obj)	                    获得指定对象 obj 中成员变量的值，返回值为 Object 类型
+set(Object obj,Object value)	    将指定对象 obj 中成员变量的值设置为 value
+getInt(Object obj)	                获得指定对象 obj 中成员类型为 int 的成员变量的值
+setInt(Object obj,int i)	        将指定对象 obj 中成员变量的值设置为 i
+getFloat(Object obj)	            获得指定对象 obj 中成员类型为 float 的成员变量的值
+setFloat(Object obj,float f)	    将指定对象 obj 中成员变量的值设置为 f
+getBoolean(Object obj)	            获得指定对象 obj 中成员类型为 boolean 的成员变量的值
+setBoolean(Object obj,boolean b)	将指定对象 obj 中成员变量的值设置为 b
+setAccessible(boolean flag)	        此方法可以设置是否忽略权限直接访问 private 等私有权限的成员变量
+getModifiers()	                    获得可以解析出该方法所采用修饰符的整数
+
+

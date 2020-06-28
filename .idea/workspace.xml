@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d9e56e08-0d2e-474b-b76b-4b31f2dfb1f9" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1Uv5EMNgj1gyZkNS11ho2UZNWSu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="File.Encoding" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.BasicNumber">
+    <configuration name="BasicIO" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mytest.basic.BasicIO" />
+      <module name="JavaDemo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mytest.basic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BasicNumber" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mytest.basic.BasicNumber" />
+      <module name="JavaDemo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mytest.basic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BasicSerialize" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mytest.basic.BasicSerialize" />
+      <module name="JavaDemo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mytest.basic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BasicSystem" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mytest.basic.BasicSystem" />
+      <module name="JavaDemo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mytest.basic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DesignPatternDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mytest.demo.DesignPatternDemo" />
+      <module name="JavaDemo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mytest.demo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.BasicNumber" />
+        <item itemvalue="Application.DesignPatternDemo" />
+        <item itemvalue="Application.BasicIO" />
+        <item itemvalue="Application.BasicSerialize" />
+        <item itemvalue="Application.BasicSystem" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d9e56e08-0d2e-474b-b76b-4b31f2dfb1f9" name="Default Changelist" comment="" />
+      <created>1576224115922</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1576224115922</updated>
+      <workItem from="1576224119320" duration="1645000" />
+      <workItem from="1576226129607" duration="2194000" />
+      <workItem from="1576458334794" duration="2478000" />
+      <workItem from="1576475202024" duration="7286000" />
+      <workItem from="1576547413456" duration="8822000" />
+      <workItem from="1576633954692" duration="1838000" />
+      <workItem from="1582592518481" duration="11055000" />
+      <workItem from="1584521936393" duration="2683000" />
+      <workItem from="1584581302111" duration="10392000" />
+      <workItem from="1584673936101" duration="3538000" />
+      <workItem from="1584934701279" duration="9652000" />
+      <workItem from="1585013052288" duration="2395000" />
+      <workItem from="1585105700083" duration="1454000" />
+      <workItem from="1585112302922" duration="6634000" />
+      <workItem from="1585185514767" duration="12791000" />
+      <workItem from="1586581536742" duration="1838000" />
+      <workItem from="1586765942980" duration="1784000" />
+      <workItem from="1586793975514" duration="268000" />
+      <workItem from="1586844611585" duration="3774000" />
+      <workItem from="1586926393028" duration="17791000" />
+      <workItem from="1587052736017" duration="8322000" />
+      <workItem from="1587219319917" duration="210000" />
+      <workItem from="1587279801211" duration="123136000" />
+      <workItem from="1588405795074" duration="52340000" />
+      <workItem from="1589183340953" duration="9062000" />
+      <workItem from="1589263770949" duration="20748000" />
+      <workItem from="1589708927335" duration="16006000" />
+      <workItem from="1591867586450" duration="2188000" />
+      <workItem from="1592230490589" duration="371000" />
+      <workItem from="1593326820520" duration="1169000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="383" y="130" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589532590478">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="383" y="130" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.877@0.23.1440.877" timestamp="1589532590478" />
+    <state x="466" y="169" key="#com.intellij.ide.util.MemberChooser" timestamp="1588584245775">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="466" y="169" key="#com.intellij.ide.util.MemberChooser/0.23.1440.877@0.23.1440.877" timestamp="1588584245775" />
+    <state x="570" y="357" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1586845000355">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="570" y="357" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.23.1440.877@0.23.1440.877" timestamp="1586845000355" />
+    <state x="308" y="123" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor" timestamp="1586844998122">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="308" y="123" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor/0.23.1440.877@0.23.1440.877" timestamp="1586844998122" />
+    <state width="1398" height="178" key="GridCell.Tab.0.bottom" timestamp="1590753939883">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="178" key="GridCell.Tab.0.bottom/0.23.1440.877@0.23.1440.877" timestamp="1590753939883" />
+    <state width="1398" height="178" key="GridCell.Tab.0.center" timestamp="1590753939882">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="178" key="GridCell.Tab.0.center/0.23.1440.877@0.23.1440.877" timestamp="1590753939882" />
+    <state width="1398" height="178" key="GridCell.Tab.0.left" timestamp="1590753939882">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="178" key="GridCell.Tab.0.left/0.23.1440.877@0.23.1440.877" timestamp="1590753939882" />
+    <state width="1398" height="178" key="GridCell.Tab.0.right" timestamp="1590753939883">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state width="1398" height="178" key="GridCell.Tab.0.right/0.23.1440.877@0.23.1440.877" timestamp="1590753939883" />
+    <state x="229" y="63" key="SettingsEditor" timestamp="1593330871516">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="229" y="63" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1593330871516" />
+    <state x="399" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1589269823566">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="399" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1589269823566" />
+    <state x="386" y="104" width="667" height="714" key="find.popup" timestamp="1593330330522">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="386" y="104" width="667" height="714" key="find.popup/0.23.1440.877@0.23.1440.877" timestamp="1593330330522" />
+    <state x="114" y="75" key="new project wizard" timestamp="1588664691816">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="114" y="75" key="new project wizard/0.23.1440.877@0.23.1440.877" timestamp="1588664691815" />
+    <state x="427" y="84" key="refactoring.ChangeSignatureDialog" timestamp="1587049167612">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="427" y="84" key="refactoring.ChangeSignatureDialog/0.23.1440.877@0.23.1440.877" timestamp="1587049167612" />
+    <state x="385" y="213" width="670" height="676" key="search.everywhere.popup" timestamp="1588156730006">
+      <screen x="0" y="23" width="1440" height="877" />
+    </state>
+    <state x="385" y="213" width="670" height="676" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1588156730006" />
+  </component>
+</project>

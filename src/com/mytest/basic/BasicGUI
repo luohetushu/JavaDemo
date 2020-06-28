@@ -1,0 +1,98 @@
+Graphical User Interface，GUI
+
+GUI 开发包：
+1、java.awt 包 – 主要提供字体/布局管理器
+2、javax.swing 包[商业开发常用] – 主要提供各种组件(窗口/按钮/文本框)
+3、java.awt.event 包 – 事件处理，后台功能的实现
+
+javax.swing 包[商业开发常用]
+Swing组件：
+1、顶层容器：常用有JFrame，JDialog
+   JFrame：普通的窗口（绝大多数 Swing 图形界面程序使用 JFrame 作为顶层容器）
+   JDialog：对话框
+2、中间容器：JPanel，JOptionPane，JScrollPane，JLayeredPane 等
+   JPanel (相当于div)：一种轻量级面板容器组件(作为JFrame中间容器)
+   JScrollPane：带滚动条的，可以水平和垂直滚动的面板组件
+   JSplitPane：分隔面板
+   JTabbedPane：选项卡面板
+   JLayeredPane：层级面板
+3、基本组件：JLabel，JButton，JTextField，JPasswordField，JRadioButton 等
+   JLabel：标签
+   JButton：按钮
+   JRadioButton：单选按钮
+   JCheckBox：复选框
+   JToggleButton：开关按钮
+   JTextField：文本框
+   JPasswordField：密码框
+   JTextArea：文本区域
+   JComboBox：下拉列表框
+   JList：列表
+   JProgressBar：进度条
+   JSlider：滑块
+4、布局
+FlowLayout 流式布局：从第一行开始，从左向右依次排列，碰到边界时转到下一行继续
+构造函数：
+   FlowLayout()     //使用默认参数
+   FlowLayout(int align)   //设置对齐方式 LEFT、RIGHT、CENTER
+   FlowLayout(int align, int hgap, int vgap)   //设置对齐方式、水平间距、垂直间距
+
+BorderLayout 边界布局：将容器划分为EAST、WEST、SOUTH、NORTH、CENTER五个部分，每个部分可放置一个组件
+构造函数：
+   BorderLayout()  //使用默认参数
+   BorderLayout(int hgap, int vgap)   //设置水平间距、垂直间距
+放置组件时需指定位置：
+   container.add(Component  comp, BorderLayout.SOUTH);    //第二个参数是BorderLayout类的常量，指定组件位置
+   container.add(Component comp);   //缺省位置时，默认为BorderLayout.CENTER，放在中间
+一共5个位置，一个位置最多放1个组件，放置多个组件时，后放置的组件会覆盖之前放置的组件
+
+GridLayout 网格布局：将容器划分为指定行数、列数的网格，每个格子的尺寸都相同，一个格子中放置一个组件，适合组件大小差不多的，比如放置计算器的按钮。
+                    从左往右、从上往下依次放置
+构造函数：
+   BorderLayout(int rows, int cols)   //设置行数、列数
+   BorderLayout(int rows, int cols, int hgap, int vgap)    //设置行数、列数、水平间距、垂直间距
+
+BoxLayout：在一个方向上排列组件，从左往右水平排列，或者从上往下竖直排列
+构造函数：
+   BoxLayout(container, axis);   //第一个参数指定容器，第二个参数指定排列方向
+                        BoxLayout.X_AXIS   水平排列，BoxLayout.Y_AXIS  竖直排列
+                        X_AXIS：组件从左到右横向排列
+                        Y_AXIS：组件从上到下纵向排列
+                        LINE_AXIS：按照行的方式排列，可以从左到右也可以从右到左
+                        PAGE_AXIS：按照页面的方式排列
+
+CardLayout 卡片布局：将容器中的所有组件（通常是容器）当做一叠卡片，只显示一张卡片（一个组件）
+构造函数：
+   CardLayout()
+   CardLayout(int hgap, int vgap)   //设置卡片与容器（左右、上下）边界的的距离
+使用步骤：
+   1、创建并指定布局管理器
+      CardLayout layout = new CardLayout(10,10);
+      container.setLayout(layout);
+   2、往容器中添加卡片
+      container.add("第一张", component1);   //第一个参数是卡片名，String类型，唯一标识此张卡片，第二个参数是要添加的组件（卡片）
+      container.add("第二张", component2);
+      默认显示第一张卡片（最先添加的那张）
+CardLayout对象可指定要显示的卡片：
+    first(container)   //显示第一张卡片（最先放入的那张）。参数container是卡片所在的容器
+    last(container)    //最后一张
+    previous(container)    //前一张
+    next(container)   //下一张
+    show(container, "卡片名")   //特定的那张。第二个参数是添加卡片时指定的卡片名，唯一标识一张卡片
+卡片是有顺序的，按照添加的顺序排列，最先添加的是第一张卡片
+
+
+
+
+Java 2种方式管理布局：
+     使用布局管理器
+     绝对定位
+
+绝对定位：
+   container.setLayout(null);    //不使用布局管理器，清除默认的布局管理器
+   component1.setBounds(......);     //手动为每个组件设置位置、尺寸
+   component2.setBounds(.....);
+   container.add(component1);
+   container.add(component2);
+注：绝对定位很灵活、很简捷，可自由放置组件，但不跨平台。一般还是建议使用布局管理器
+
+

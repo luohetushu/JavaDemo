@@ -1,0 +1,107 @@
+异常（Exception）：称为例外，是一个在程序执行期间发生的事件，中断正在执行的程序的正常指令流
+异常产生：
+1、Java 内部错误发生异常，Java 虚拟机产生的异常
+2、未检査的异常：编写的程序代码中的错误所产生的异常，例如空指针异常、数组越界异常等
+一般需要在某些类中集中处理这些异常
+3、检査的异常：通过 throw 语句手动生成的异常
+一般用来告知该方法的调用者一些必要的信息
+
+拋出（throw）异常：生成异常对象，并提交给运行时的系统
+在一个方法的运行过程中，如果发生了异常，则这个方法会产生代表该异常的一个对象，并把它交给运行时的系统，运行时系统寻找相应的代码来处理这一异常
+捕获（catch）异常：运行时系统在方法的调用栈中查找，直到找到能够处理该类型异常的对象
+
+异常类型：在 Java 中所有异常类型都是内置类 java.lang.Throwable 类的子类
+Throwable 类是所有异常和错误的超类，下面有 Error 和 Exception 两个子类分别表示错误和异常
+1、Exception 类用于用户程序可能出现的异常情况，用来创建自定义异常类型类的类。
+2、Error 定义了在通常环境下不希望被程序捕获的异常。Error 类型的异常用于 Java 运行时由系统显示与运行时系统本身有关的错误。
+堆栈溢出是这种错误的一例
+
+异常类 Exception 分为 运行时异常 和 非运行时异常，也称为 不检查异常（Unchecked Exception）和 检查异常（Checked Exception）
+运行时异常： RuntimeException 类及其子类异常，如 NullPointerException、IndexOutOfBoundsException 等，
+           此异常是不检查异常，程序中可以选择捕获处理，也可以不处理。这些异常一般由程序逻辑错误引起，程序应该从逻辑角度尽可能避免这类异常的发生
+           如果程序中开发者不做处理，将交由 JVM 处理
+非运行时异常：指 RuntimeException 以外的异常，如 IOException、InterruptedException、ClassNotFoundException 等以及用户自定义的 Exception 异常，类型上都属于 Exception 类及其子类。
+           必须进行处理的异常，如果不处理，程序就不能编译通过。
+           一般情况下不自定义检查异常
+
+常见的异常类型：
+Exception	                    异常层次结构的根类
+RuntimeException	            运行时异常，多数 java.lang 异常的根类
+UnsupportedOperationException   当不支持请求的操作时，抛出该异常
+ArithmeticException	            算术谱误异常，如以零做除数
+ArrayIndexOutOfBoundException	数组大小小于或大于实际的数组大小
+ArrayStoreException             试图将错误类型的对象存储到一个对象数组时抛出的异常
+NegativeArraySizeException      如果应用程序试图创建大小为负的数组，则抛出该异常
+NullPointerException	        尝试访问 null 对象成员，空指针异常
+ClassNotFoundException	        不能加载所需的类
+NumberFormatException	        数字转化格式异常，比如字符串到 float 型数字的转换无效
+IOException	                    I/O 异常的根类
+FileNotFoundException	        找不到文件
+NoSuchMethodException           无法找到某一特定方法时，抛出该异常
+EOFException	                文件结束
+InterruptedException	        线程中断
+IllegalArgumentException	    方法接收到非法参数
+ClassCastException	            类型转换异常
+SQLException	                操作数据库异常
+SecurityException               由安全管理器抛出的异常，指示存在安全侵犯
+
+异常处理
+try{
+    逻辑程序块
+} catch(ExceptionType1 e){
+    处理代码块1
+} catch (ExceptionType2 e){
+    处理代码块2
+    throw(e);    //再抛出这个"异常"
+} finally {
+    释放资源代码块
+}
+try catch 语句用于捕获并处理异常，finally 语句用于在任何情况下（除特殊情况外）都必须执行的代码，throw 语句用于拋出异常，throws 语句用于声明可能会出现的异常
+如果 try 语句块中发生异常，那么程序会跳过 try 语句块中剩余的语句，转到 catch 语句块后面的第一条语句开始执行。
+如果 try 语句块中没有异常发生，那么 try 块正常结束，后面的 catch 语句块被跳过，程序将从 catch 语句块后的第一条语句开始执行
+在代码处理快中可以输出异常信息：
+1、printStackTrace() 方法：指出异常的类型、性质、栈层次及出现在程序中的位置。
+2、getMessage() 方法：输出错误的性质。
+3、toString() 方法：给出异常的类型与性质
+
+try catch finally 语句块的执行情况：
+1、如果 try 代码块中没有拋出异常，则执行完 try 代码块之后直接执行 finally 代码块，然后执行 try catch finally 语句块之后的语句。
+2、如果 try 代码块中拋出异常，并被 catch 子句捕捉，那么在拋出异常的地方终止 try 代码块的执行，转而执行相匹配的 catch 代码块，之后执行 finally 代码块。
+   如果 finally 代码块中没有拋出异常，则继续执行 try catch finally 语句块之后的语句；
+   如果 finally 代码块中拋出异常，则把该异常传递给该方法的调用者。
+3、如果 try 代码块中拋出的异常没有被任何 catch 子句捕捉到，那么将直接执行 finally 代码块中的语句，并把该异常传递给该方法的调用者。
+4、如果代码在 try 内部执行一条 System.exit() 语句，则应用程序将终止而不会执行 finally。
+5、如果在执行 finally 块之前，程序所在的线程死亡，finally 块将不被执行
+
+处理异常，遵循原则：
+1、在当前方法声明中使用 try catch 语句捕获异常。
+2、一个方法被覆盖时，覆盖它的方法必须拋出相同的异常或异常的子类。
+3、如果父类抛出多个异常，则覆盖方法必须拋出那些异常的一个子集，而不能拋出新异常。
+
+异常处理机制：
+1、在方法中用 try catch 语句捕获并处理异常，catch 语句可以有多个，用来匹配多个异常。
+2、对于处理不了的异常或者要转型的异常，在方法的声明处通过 throws 语句拋出异常，即由上层的调用方法来处理
+
+
+
+throws 声明异常：当一个方法产生一个它不处理的异常时，那么就需要在该方法的头部声明这个异常，以便将该异常在方法调用处进行处理
+returnType method_name(paramList) throws Exception 1,Exception2,…{…}
+returnType 表示返回值类型，method_name 表示方法名，Exception 1，Exception2，… 表示异常类。如果有多个异常类，它们之间用逗号分隔
+注：子类在覆盖父类带 throws 子句的方法时，子类的方法声明中的 throws 子句不能出现父类对应方法的 throws 子句中没有的异常类型
+
+throw 拋出异常：直接拋出一个异常，后接一个可拋出的异常类对象，其语法格式如下： 在代码块中手动抛出异常
+throw ExceptionObject;   //ExceptionObject 必须是 Throwable 类或其子类的对象
+当 throw 语句执行时，它后面的语句将不执行，此时程序转向调用者程序，寻找与之相匹配的 catch 语句，执行相应的异常处理程序。
+如果没有找到相匹配的 catch 语句，则再转向上一层的调用程序。这样逐层向上，直到最外层的异常处理程序终止程序并打印出调用栈情况
+
+
+
+自定义异常：自定义异常类必须继承现有的 Exception 类或 Exception 的子类来创建
+<class> <自定义异常名> <extends> <Exception>
+自定义异常类构造方法：
+1、一个是无参的默认构造方法，
+2、另一个构造方法以字符串的形式接收一个定制的异常消息，并将该消息传递给超类的构造方法
+
+
+
+

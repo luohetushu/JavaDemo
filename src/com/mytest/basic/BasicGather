@@ -1,0 +1,236 @@
+集合      Java 的所有集合类都位于 java.util 包
+集合接口：    接口是集合的抽象数据类型，提供对集合中所表示的内容进行单独操作的可能
+1、Collection 接口：该接口是最基本的集合接口，一个 Collection 代表一个元素。
+2、List 接口：该接口实现了 Collection 接口。List 是有序集合，允许有相同的元素。
+   使用 List 能够精确地控制每个元素插入的位置，用户能够使用索引（元素在 List 中的位置，类似于数组下标）来访问 List 中的元素，与数组类似。
+3、Set 接口：该接口也实现了 Collection 接口，不能包含重复的元素。
+   SortedSet 是按升序排列的 Set 集合。
+4、Queue 接口：实现 Collection 接口。一种特殊的线性表，只允许在表的前端进行删除操作，在表的后端进行插入操作
+5、Map 接口：包含键值对，Map 不能包含重复的键。
+   SortedMap 是一个按升序排列的 Map 集合
+
+集合接口实现类：
+1、HashSet：为优化査询速度而设计的 Set。
+   基于 HashMap 实现的，HashSet 底层使用 HashMap 来保存所有元素，实现比较简单。
+2、TreeSet：该类不仅实现了 Set 接口，还实现了 java.util.SortedSet 接口，
+   该实现类是一个有序的 Set，这样就能从 Set 里面提取一个有序序列。
+3、ArrayList：一个用数组实现的 List，能进行快速的随机访问，效率高而且实现了可变大小的数组。
+4、LinkedList：对顺序访问进行了优化，但随机访问的速度相对较慢。
+  此外它还有 addFirst()、addLast()、getFirst()、getLast()、removeFirst() 和 removeLast() 等方法，
+  能把它当成栈（Stack）或队列（Queue）来用
+5、HashMap：实现 Map 映射的类，实现一个键到值的映射
+
+
+
+Collection接口：是 List 接口和 Set 接口的父接口，通常情况下不被直接使用
+Collection接口常用方法：List 接口和 Set 接口继承自 Collection 接口，也可以调用这些方法
+boolean add(E e)	                向集合中添加一个元素，E 是元素的数据类型
+boolean addAll(Collection c)	    向集合中添加集合 c 中的所有元素
+void clear()	                    删除集合中的所有元素
+boolean contains(Object o)	        判断集合中是否存在指定元素
+boolean containsAll(Collection c)	判断集合中是否包含集合 c 中的所有元素
+boolean isEmpty()	                判断集合是否为空
+Iterator<E> iterator()	            返回一个 Iterator 对象，用于遍历集合中的元素
+boolean remove(Object o)	        从集合中删除一个指定元素
+boolean removeAll(Collection c)	    从集合中删除所有在集合 c 中出现的元素       删除集合中相同的元素
+boolean retainAll(Collection c)	    仅仅保留集合中所有在集合 c 中出现的元素     保留集合中相同的元素
+int size()	                        返回集合中元素的个数
+Object[] toArray()	                返回包含此集合中所有元素的数组
+
+
+
+List接口：  实现类：ArrayList 类和 LinkedList 类
+
+ArrayList类：提供了快速基于索引访问成员的方式
+ArrayList类常用构造方法：
+1、ArrayList()：构造一个初始容量为 10 的空列表  JDK 1.9以前
+2、ArrayList(Collection<?extends E>c)：构造一个包含指定 Collection 的元素的列表，
+   这些元素是按照该 Collection 的迭代器返回它们的顺序排列。
+
+ArrayList类常用方法：
+E get(int index)	                        获取此集合中指定索引位置的元素，E 为集合中元素的数据类型
+int index(Object o)	                        返回此集合中第一次出现指定元素的索引，如果此集合不包含该元素，则返回 -1
+int lastIndexOf(Obj ect o)	                返回此集合中最后一次出现指定元素的索引，如果此集合不包含该元素，则返回 -1
+E set(int index, E element)	                将此集合中指定索引位置的元素修改为 element 参数指定的对象。
+                                            此方法返回此集合中指定索引位置的原元素
+List<E> subList(int fromIndex, int toIndex)	返回一个新的集合，新集合中包含 fromIndex 和 toIndex 索引之间的所有元素。
+                                            包含 fromIndex 处的元素，不包含 toIndex 索引处的元素
+
+List转换成为数组：调用ArrayList的toArray方法。
+数组转换成为List：调用Arrays的asList方法
+
+LinkedList 类：采用链表结构保存对象，便于向集合中插入或者删除元素
+LinkedList 类常用方法：
+void addFirst(E e)	将指定元素添加到此集合的开头
+void addLast(E e)	将指定元素添加到此集合的末尾
+E getFirst()	    返回此集合的第一个元素
+E getLast()	        返回此集合的最后一个元素
+E removeFirst()	    删除此集合中的第一个元素
+E removeLast()	    删除此集合中的最后一个元素
+
+ArrayList 和 LinkedList 的区别：
+需要频繁向集合中插入和删除元素时，使用 LinkedList 类比 ArrayList 类效果高，但是 LinkedList 类检索集合中特定索引位置元素的速度则相对较慢
+1、ArrayList底层的数据结构是数组，支持随机访问，而 LinkedList 的底层数据结构是双向循环链表，不支持随机访问
+2、使用下标访问一个元素，ArrayList 的时间复杂度是 O(1)，而 LinkedList 是 O(n)
+3、进行大量数据的保存时，ArrayList 可能产生大量的垃圾造成性能下降，此时可以采用 LinkedList
+
+
+
+Set 接口：实现类：HashSet 类和 TreeSet类
+Set 集合中的对象不按特定的方式排序，只是简单地把对象加入集合，不能包含重复的对象，并且最多只允许包含一个 null 元素
+如果向 Set 集合中添加两个相同的元素，则后添加的会覆盖前面添加的元素
+
+HashSet 类：按照哈希算法存储集合中的元素，来提高集合元素的存储速度，
+当向 Set 集合中添加一个元素时，HashSet 会调用该元素的 hashCode() 方法，获取其哈希码，然后根据这个哈希码计算出该元素在集合中的存储位置
+HashSet 类常用构造方法：
+1、HashSet()：构造一个新的空的 Set 集合。
+2、HashSet(Collection<? extends E> c)：构造一个包含指定 Collection 集合元素的新 Set 集合。
+   其中，“< >”中的 extends 表示 HashSet 的父类，即指明该 Set 集合中存放的集合元素类型。c 表示其中的元素将被存放在此 Set 集合中
+HashSet 类实现原理：
+1、HashSet 底层由 HashMap 实现
+2、HashSet 的值存放于 HashMap 的 key 上
+3、HashMap 的 value 统一为 PRESENT
+
+TreeSet类常用方法：
+E first()	                                    返回此集合中的第一个元素。其中，E 表示集合中元素的数据 类型
+E last()	                                    返回此集合中的最后一个元素
+E poolFirst()	                                获取并移除此集合中的第一个元素
+E poolLast()	                                获取并移除此集合中的最后一个元素
+SortedSet<E> subSet(E fromElement,E toElement)	返回一个新的集合，新集合包含原集合中 fromElement 对象与 toElement对象之间的所有对象。
+                                                包含 fromElement对象，不包含 toElement 对象
+SortedSet<E> headSet<E toElement〉	            返回一个新的集合，新集合包含原集合中 toElement 对象之前的所有对象。不包含 toElement 对象
+SortedSet<E> tailSet(E fromElement)	            返回一个新的集合，新集合包含原集合中 fromElement 对象之后的所有对象。包含 fromElement 对象
+
+TreeSet 类：实现对集合进行自然排序，指升序排序
+注：TreeSet 只能对实现了 Comparable 接口的类对象进行排序
+
+实现Comparable接口类对象的比较方式：
+包装类（BigDecimal、BigInteger、   按数字大小比较
+Byte、Double、Float、Integer、
+Long 及 Short)
+Character	                     按字符的 Unicode 值的数字大小比较
+String	                         按字符串中字符的 Unicode 值的数字大小比较
+
+
+
+Map 集合：一种键-值对（key-value）集合，Map 集合中的每一个元素都包含一个键对象和一个值对象
+Map 接口实现类：
+1、HashMap 类：按哈希算法来存取键对象
+2、TreeMap 类：对 键对象 进行排序
+
+Map 接口常用方法：
+V get(Object key)	    返回 Map 集合中指定键对象所对应的值。V 表示值的数据类型
+V put(K key, V value)	向 Map 集合中添加键-值对，返回 key 以前对应的 value，如果没有， 则返回 null
+V remove(Object key)	从 Map 集合中删除 key 对应的键-值对，返回 key 对应的 value，如果没有，则返回null
+Set entrySet()	        返回 Map 集合中所有键-值对的 Set 集合，此 Set 集合中元素的数据类型为 Map.Entry
+Set keySet()	        返回 Map 集合中所有键对象的 Set 集合
+
+
+
+Collections 类：集合类的一个工具类/帮助类，其中提供了一系列静态方法，用于对集合中元素进行排序、搜索以及线程安全等各种操作
+sort()升序排序：
+1、void sort(List list)：根据元素的自然顺序对集合中的元素进行升序排序
+2、void sort(List list, Comparator comparator)：按 comparator 参数指定的排序方式对集合中的元素进行排序
+
+reverse()：对指定集合元素进行逆向排序
+void reverse(List list)    //对集合中的元素进行反转排序
+
+copy() ：将指定集合中的所有元素复制到另一个集合中
+void copy(List <? super T> dest, List<? extends T> src)
+dest 表示目标集合对象，src 表示源集合对象  //如果目标集合长度不够而无法包含整个源集合元素，程序将抛出 IndexOutOfBoundsException 异常
+
+fill()：对指定集合的所有元素进行填充操作
+void fill(List<? super T> list,T obj)    //使用指定元素替换指定列表中的所有元素
+list 表示要替换的集合对象，obj 表示用来替换指定集合的元素值
+
+unmodifiableList(List<? extends T> list)、unmodifiableSet(Set<? extends T> s)  等确保返回的集合不能被修改
+
+
+
+
+
+
+泛型：  泛型可以在编译的时候检查类型安全，并且所有的强制转换都是自动和隐式的
+返型的本质：类中的属性或方法的参数与返回值的类型可以在对象实例化时动态确定
+
+泛型类：
+public class class_name<data_type1,data_type2,…>{
+     //泛型类一般用于类中的属性类型不确定的情况下
+     private data_type1 property_name1;
+     private data_type2 property_name2;
+} //data_ type1 等表示类型参数，为定义占位符，泛型标记
+class_name 表示类的名称，data_ type1 等表示类型参数。Java 泛型支持声明一个以上的类型参数，只需要将类型用逗号隔开即可
+注：在实例化泛型类时，需要指明泛型类中的类型参数，并赋予泛型类属性相应类型的值；未指明时，默认Object类
+
+泛型方法：  是否拥有泛型方法，与其所在的类是不是泛型没有关系
+[访问权限修饰符][static][final]<类型参数列表>返回值类型方法名([形式参数列表])
+例如：public static List<T> find(Class<T>class, int userId){}
+注：泛型方法，其返回值类型至少有一个参数类型应该是泛型，而且类型应该是一致的
+
+泛型高级用法：
+1、限制泛型可用类型：对泛型类实例的类型进行限制        声明一个有界的类型参数，首先列出类型参数的名称，后跟extends关键字，最后紧跟它的上界
+class 类名称<T extends anyClass>
+anyClass 指某个接口或类
+使用泛型限制后，泛型类的类型必须实现或继承 anyClass 这个接口或类。无论 anyClass 是接口还是类，在进行泛型限制时都必须使用 extends 关键字
+2、使用泛型通配符"?"：在创建一个泛型类对象时限制这个泛型类的类型必须实现或继承某个接口或类
+泛型类名称<? extends List> a = null;
+“<? extends List>”作为一个整体表示类型未知，当需要使用泛型对象时，可以单独实例化
+
+泛型通配符"?"：在泛型对象引用传递时使用
+<? extends T>表示该通配符所代表的类型是T类型的子类：设置泛型的上限
+   eg：定义"? extends Number"：表示该泛型只允许设置 Number 类或 Number 类的子类
+<? super T>表示该通配符所代表的类型是T类型的父类：设置泛型的下限
+   eg：定义"? extends String"：表示该泛型只允许设置 String 类或 String 类的父类
+
+3、继承泛型类和实现泛型接口：定义为泛型的类和接口也可以被继承和实现
+public class FatherClass<T1>{}
+public class SonClass<T1,T2,T3> extents FatherClass<T1>{}
+或
+interface Interface1<T1>{}
+interface SubClass<T1,T2> implements Interface1<T1>{}
+    实例化：Interface1<String> it1 = new SubClass<String, Integer>()
+interface SubClass<T1,T2> implements Interface1<String>{}
+    实例化：Interface1<String> it1 = new SubClass<String, Integer>()
+
+
+
+枚举：一个被命名的整型常数的集合，用于声明一组带标识符的常数
+声明枚举：
+enum-modifiers enum enumname:enum-base
+{
+    enum-body,
+}
+enum-modifiers 表示枚举的修饰符主要包括 public、private 和 internal；
+enumname 表示声明的枚举名称；enum-base 表示基础类型；enum-body 表示枚举的成员，它是枚举类型的命名常数
+注：任意两个枚举成员不能具有相同的名称，且它的常数值必须在该枚举的基础类型的范围之内，多个枚举成员之间使用逗号分隔
+注：如果没有显式地声明基础类型的枚举，那么意味着它所对应的基础类型是 int
+
+枚举类：  每一个枚举都继承自 java.lang.Enum 类
+每一个枚举类型成员都可以看作是 Enum 类的实例，这默认都被 final、public, static 修饰，当使用枚举类型成员时，直接使用枚举名称调用成员即可
+
+Enum 类常用方法：
+values()	以数组形式返回枚举类型的所有成员
+valueOf()	将普通字符串转换为枚举实例
+compareTo()	比较两个枚举成员在定义时的顺序
+ordinal()	获取枚举成员的索引位置
+
+enum 与 Enum 的区别：
+1、enum 是一个关键字，用于定义枚举类
+2、Enum 是一个抽象类，所有用 enum 关键字定义的枚举类默认继承该类
+
+
+
+EnumMap 类
+
+
+
+EnumSet 类： 放入它的枚举常量必须属于同一枚举类型
+EnumSet 类常用方法：
+allOf(Class<E> element type)	创建一个包含指定枚举类型中所有枚举成员的 EnumSet 对象
+complementOf(EnumSet<E> s)	    创建一个与指定 EnumSet 对象 s 相同的枚举类型 EnumSet 对象，并包含所有 s 中未包含的枚举成员
+copyOf(EnumSet<E> s)	        创建一个与指定 EnumSet 对象 s 相同的枚举类型 EnumSet 对象，并与 s 包含相同的枚举成员
+noneOf(<Class<E> elementType)	创建指定枚举类型的空 EnumSet 对象
+of(E first,e...rest)	        创建包含指定枚举成员的 EnumSet 对象
+range(E from ,E to)	            创建一个 EnumSet 对象，该对象包含了 from 到 to 之间的所有枚举成员
+
+

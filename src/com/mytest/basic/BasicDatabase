@@ -1,0 +1,98 @@
+关系型数据库：MySql, Oracle, SQL Server, Access
+1、关系型数据是以行和列的形式展示，行与列的形式组织起来的数据的集合。
+2、一个数据库包括一个或多个表。
+3、比如说一个人的信息有：ID，身份证，姓名，年龄，性别，住址等，这些信息都是和这个人有关系的
+4、关系型数据库中 Table 表含义：存储相同数据结构的数据的集合
+
+非关系型数据库（nosql）：Hbase, MongoDB，Redis
+非关系型数据库里面的数据是以 ”key”,”value”键值对的形式存在，key是唯一的，value值可以有多个重复的数据
+
+
+
+RDBMS：Relational Database Management Systems
+DBMS：Database Management Systems
+SQL：结构化查询语言(Structured Query Language)
+   作用：客户端使用 SQL 命令操控服务器
+
+
+SQL语言的分类：
+1. 数据查询语言 DQL Data Query Language
+数据查询语言 DQL 基本结构是由 SELECT 子句、FROM 子句、WHERE 子句组成的查询块：
+SELECT <字段名表>
+FROM <表或视图名>
+WHERE <查询条件>
+
+2 .数据操纵语言 DML Data Manipulation Language
+数据操纵语言DML主要有三种形式：
+1) 插入：INSERT
+2) 更新：UPDATE
+3) 删除：DELETE
+
+3. 数据定义语言 DDL Data Definition Language
+数据定义语言 DDL 用来创建数据库中的各种对象-----表、视图、索引、同义词、聚簇等如：
+CREATE TABLE/VIEW/INDEX/SYN/CLUSTER
+         |     |    |    |      |
+         表   视图  索引 同义词   簇
+DDL 操作是隐性提交的！不能 rollback
+
+4. 数据控制语言 DCL Data Control Language
+数据控制语言 DCL 用来授予或回收访问数据库的某种特权，并控制数据库操纵事务发生的时间及效果，对数据库实行监视等。如：
+1) GRANT：授权。
+2) ROLLBACK [WORK] TO [SAVEPOINT]：回退到某一点。
+回滚--- ROLLBACK
+回滚命令使数据库状态回到上次最后提交的状态。其格式为：SQL > ROLLBACK;
+3) COMMIT [WORK]：提交。
+
+提交数据有三种类型：显式提交、隐式提交及自动提交
+1、显式提交
+用COMMIT命令直接完成的提交为显式提交。其格式为：SQL> COMMIT；
+
+2、隐式提交
+用SQL命令间接完成的提交为隐式提交。这些命令是：
+ALTER，AUDIT，COMMENT，CONNECT，CREATE，DISCONNECT，DROP，EXIT，GRANT，NOAUDIT，QUIT，REVOKE，RENAME。
+
+3、自动提交
+若把AUTOCOMMIT设置为ON，则在插入、修改、删除语句执行后，系统将自动进行提交，这就是自动提交。
+其格式为：SQL> SET AUTOCOMMIT ON；
+
+
+事务：一组逻辑相关的SQL指令，要么全部执行，要么全不执行
+事务管理（ACID）
+1、Atomic（原子性）：指整个数据库事务是不可分割的工作单位。
+只有使据库中所有的操作执行成功，才算整个事务成功；事务中任何一个SQL语句执行失败，那么已经执行成功的SQL语句也必须撤销，数据库状态应该退回到执行事务前的状态。
+
+2、Consistency（一致性）：指数据库事务不能破坏关系数据的完整性以及业务逻辑上的一致性
+
+3、Isolation（隔离性）：指的是在并发环境中，当不同的事务同时操纵相同的数据时，每个事务都有各自的完整数据空间
+
+4、Durability（持久性）：指的是只要事务成功结束，它对数据库所做的更新就必须永久保存下来
+即使发生系统崩溃，重新启动数据库系统后，数据库还能恢复到事务成功结束时的状态
+
+
+
+存储过程（Stored Procedure）：在大型数据库系统中，一组为了完成特定功能的SQL 语句集，
+存储在数据库中，经过第一次编译后再次调用不需要再次编译，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它
+存储过程是数据库中的一个重要对象
+
+索引Index：SQL数据库用来加速数据查询的特殊的数据结构
+
+E-R图：实体-联系图(Entity Relationship Diagram)，提供了表示实体类型、属性和联系的方法，用来描述现实世界的概念模型
+
+
+
+范式：one fact in one place
+1、1NF： 表的每一列都是不可分割的基本数据项
+定义：关系中每一分量不可再分。即不能以集合、序列等作为属性。
+
+2、2NF
+定义：在1NF基础上，消除非主属性对键的部分依赖，则称它符合2NF
+
+3、3NF：满足2NF，表中不包含已在其它表中已包含的非主关键字信息
+定义：在2NF基础上，消除非主属性对键的传递依赖，则称它符合3NF
+
+
+
+
+
+
+

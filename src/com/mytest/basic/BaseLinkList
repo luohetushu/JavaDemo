@@ -1,0 +1,179 @@
+链表：动态对象数组，可以实现若干对象的存储
+
+最简单的单向链表实现
+    interface ILink<E>{  //设置范型
+        public void add(E e);  //增加数据
+        public int size();  //获取数据个数
+        public boolean isEmpty(); //判断是否为空集合
+        public E[] toArray();  //将集合数据以数组方式返回
+        public E get(int index);  //根据索引获取数据
+        public void set(int index, E e);  //修改指定索引数据
+        public boolean contains(E e); //判断数值是否存在
+        public void remove(E e);  //删除指定数据
+        public void clean();  //清空链表
+    }
+    class LinkImpl<E> implements ILink<E>{
+        //Link 成员
+        private Node root;   //保存根数据
+        private int count;   //保存数据的个数
+        private E[] returnData; //返回的数据保存数组
+        private int foot;  // 返回数组的脚标
+        //Link 方法
+        @Override
+        public void add(E e){
+            if(e == null) return;
+            Node newNode = new Node(e);
+            if(root == null){
+                root = newNode;
+            } else {
+                root.addNode(newNode);
+            }
+            this.count++;
+        }
+        @Override
+        public int size(){
+            return count;
+        }
+        @Override
+        public boolean isEmpty(){
+            //return this.root == null;
+            return this.count == 0;
+        }
+        @Override
+        public E[] toArray(){
+            if(this.isEmpty()) return null;
+            this.foot = 0;
+            this.returnData = new Object[this.count]; //根据已有数据个数开辟数组长度
+            this.root.toArrayNode();  //在 Node 内部类中递归获取数据
+            return this.returnData;
+        }
+        @Override
+        public E get(int index){
+            if(this.root == null) return null;
+            if(index< 0 || index >= count ) return null;
+            this.foot = 0;  //重制索引的下标
+            return this.root.getNode(index);  //在 Node 内部类中递归根据索引获取数据
+        }
+        @Override
+        public void set(int index, E e){
+            if(index< 0 || index >= count ) return;
+            this.foot = 0;  //重制索引的下标
+            this.root.setNode(index, e);  //在 Node 内部类中递归根据索引修改数据
+        }
+        @Override
+        public boolean contains(E e){
+            if(e == null || this.root == null) return false;
+            return this.root.containsNode(e); //在 Node 内部类中递归判读数值是否存在
+        }
+        @Override
+        public void remove(E e){
+            if(this.contains(e)){  //判读数值是否存在
+                if(this.root.data.equals(e)){  //如果删除根节点 删除的逻辑就是引用的传递改变
+                    this.root = this.root.next;  //引用传递 根节点变为下一个节点
+                } else {
+                    this.root.next.removeNode(this.root, e); //在 Node 内部类中递归删除指定数据
+                }
+                this.count--;
+            }
+        }
+        @Override
+        public void clean(){ //设置根节点为null，那么后续节点就都不存在类
+            this.root = null;
+            this.count = 0;
+        }
+        //Link 节点 内部类
+        private class Node{
+            private E data; //保存的数据
+            private Node next; //保存下一个节点
+            public Node(E data){
+                this.data = data;
+            }
+            //保存新的node数据
+            public void addNode(Node newNode){
+                if(this.next == null){  //当前节点的下一个节点为空
+                    this.next = newNode;
+                } else {
+                    this.next.addNode(newNode);  //递归保存呐
+                }
+            }
+            //保存数据在返回的数组中
+            public void toArrayNode(){
+                LinkImpl.this.returnData[LinkImpl.this.foot++] = this.data;
+                if (this.next != null) {  //还有下一个数据
+                    this.next.toArrayNode();
+                }
+            }
+            //递归根据索引获取数据
+            public E getNode(int index){
+                if(LinkImpl.this.foot ++ == index){
+                    return this.data;
+                } else {
+                    return this.next.getNode(index);
+                }
+            }
+            //递归根据索引修改数据
+            public void setNode(int index, E data){
+                if(LinkImpl.this.foot ++ == index){
+                    this.data = data;
+                } else {
+                    this.next.setNode(index, data);
+                }
+            }
+            //递归判读数值是否存在
+            public boolean containsNode(E data){
+                if(this.data.equals(data)){  //比较对象
+                    return true;
+                } else {
+                    if(this.next == null){
+                        return false;
+                    } else {
+                        return this.next.containsNode(data);
+                    }
+                }
+            }
+            //递归删除指定数据
+            public void removeNode(Node previous, E e){
+                if(this.data.equals(e)){
+                    previous.next = this.next; //空出当前节点
+                } else {
+                    if(this.next != null){
+                        this.next.removeNode(this, e);
+                    }
+                }
+            }
+        }
+    }
+    public class LinkDemo{
+        public static void main(String[] args){
+            ILink<String> link = new LinkImpl<String>();
+            //数据添加
+            link.add("Hello");
+            link.add("World");
+            link.add("I Know");
+            //.....可以继续添加
+            //删除指定数据
+            link.remove("World");
+            //获取数据个数
+            System.out.println(link.size());
+            //判断是否为空集合
+            System.out.println(link.isEmpty());
+            //转换成数组
+            String[] array = link.toArray();
+            foreach(String str: array){
+                System.out.println(str);
+            }
+            //根据索引获取数据
+            //注：数组根据索引获取数据时间复杂度为1，链表为n
+            System.out.println(link.get(-1)); // null
+            System.out.println(link.get(0));  // Hello
+            //根据索引修改数据
+            //时间复杂度为1
+            link.set(1, "Earth");
+            System.out.println(link.get(1));  // Earth
+            //判读数值是否存在
+            System.out.println(link.contains("Exid-A")); //false
+            System.out.println(link.contains("Hello"));  //true
+        }
+    }
+
+

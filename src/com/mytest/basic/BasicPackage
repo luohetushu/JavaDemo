@@ -1,0 +1,226 @@
+Object 类
+Object 是所有类的父类。当一个类被定义后，如果没有指定继承的父类，那么默认父类就是 Object 类
+
+Object类的常用方法：
+Object clone()	        创建与该对象的类相同的新对象
+                        注：如果一个类想被克隆，则这个类需要实现 Cloneable 接口，同时在类中重写 clone 方法
+boolean equals(Object)	比较两对象是否相等
+void finalize()	        当垃圾回收器确定不存在对该对象的更多引用时，对象的圾回收器调用该方法
+Class getClass()	    返回一个对象运行时的实例类，通过 Class 对象可以获取该类的各种信息，包括类名、父类以及它所实现接口的名字等
+int hashCode()	        返回该对象的散列码值
+void notify()	        激活等待在该对象的监视器上的一个线程
+void notifyAll()	    激活等待在该对象的监视器上的全部线程
+String toString()	    返回该对象的字符串表示
+void wait()	            在其他线程调用此对象的 notify() 方法或 notifyAll() 方法前，导致当前线程等待
+
+
+
+Integer 类
+Integer 类构造方法:
+Integer(int value)：构造一个新分配的 Integer 对象，它表示指定的 int 值。         Integer integer = 40;
+Integer(String s)：构造一个新分配的 Integer 对象，它表示 String 参数所指示的 int 值
+
+Integer 类常用方法:
+byte byteValue()		            以 byte 类型返回该 Integer 的值
+short shortValue()		            以 short 类型返回该 Integer 的值
+int intValue()	    	            以 int 类型返回该 Integer 的值
+String toString()	                返回一个表示该 Integer 值的 String 对象
+boolean equals(Object obj)		    比较此对象与指定对象是否相等
+int compareTo(Integer integer)		在数字上比较两个 Integer 对象，如相等，则返回 0；小于 integer 的数值，则返回-1；大于则返回1
+int compare(int x, int y)           (x < y) ? -1 : ((x == y) ? 0 : 1)
+Integer valueOf(String s)	    	返回保存指定的 String 值的 Integer 对象
+int parseInt(String s)	        	将数字字符串转换为 int 数值
+
+Integer 类常量:
+MAX_VALUE：值为 2^31-1 的常量，它表示 int 类型能够表示的最大值。
+MIN_VALUE：值为 -2^31 的常量，它表示 int 类型能够表示的最小值。
+SIZE：用来以二进制补码形式表示 int 值的比特位数。   int size = Integer.SIZE;    // 获取 int 类型的二进制位 32
+TYPE：表示基本类型 int 的 Class 实例             Class class = Integer.TYPE;    // 获取基本类型 int 的 Class 实例
+
+
+
+Float 类
+Float 类构造方法：
+Float(double value)：构造一个新分配的 Float 对象，它表示转换为 float 类型的参数。
+Float(float value)：构造一个新分配的 Float 对象，它表示基本的 float 参数。
+Float(String s)：构造一个新分配的 Float 对象，它表示 String 参数所指示的 float 值
+
+Float 类常用方法：
+byte byteValue()		    以 byte 类型返回该 Float 的值
+double doubleValue()		以 double 类型返回该 Float 的值
+float floatValue()		    以 float 类型返回该 Float 的值
+int intValue()		        以 int 类型返回该 Float 的值（强制转换为 int 类型）
+long longValue()		    以 long 类型返回该 Float 的值（强制转换为 long 类型）
+short shortValue()		    以 short 类型返回该 Float 的值（强制转换为 short 类型）
+boolean isNaN()		        如果此 Float 值是一个非数字值，则返回 true，否则返回 false
+boolean isNaN(float v)		如果指定的参数是一个非数字值，则返回 true，否则返回 false
+String toString()		    返回一个表示该 Float 值的 String 对象
+Float valueOf(String s)		返回保存指定的 String 值的 Float 对象
+float parseFloat(String s)  将数字字符串转换为 float 数值
+
+Float 类常用常量:
+MAX_VALUE：值为 3.4028235e+38f 的常量，它表示 float 类型能够表示的最大值。
+MIN_VALUE：值为 1.4e-45f 的常量，它表示 float 类型能够表示的最小值。
+MAX_EXPONENT: 有限 float 变量可能具有的最大指数。 127
+MIN_EXPONENT：标准化 float 变量可能具有的最小指数。 -126
+MIN_NORMAL：保存 float 类型数值的最小标准值的常量，即 2^-126。
+NaN：保存 float 类型的非数字值的常量。   // NaN = 0.0f / 0.0f
+POSITIVE_INFINITY = 1.0f / 0.0f;
+NEGATIVE_INFINITY = -1.0f / 0.0f;
+SIZE：用来以二进制补码形式表示 float 值的比特位数。
+TYPE：表示基本类型 float 的 Class 实例。
+
+
+
+Double 类
+Double 类构造方法：
+Double(double value)：构造一个新分配的 Double 对象，它表示转换为 double 类型的参数。
+Double(String s)：构造一个新分配的 Double 对象，它表示 String 参数所指示的 double 值
+
+Double 类常用方法：
+byte byteValue()		    以 byte 类型返回该 Double 的值
+double doubleValue()		以 double 类型返回该 Double 的值
+float floatValue()		    以 float 类型返回该 Double 的值
+int intValue()		        以 int 类型返回该 Double 的值（强制转换为 int 类型）
+long longValue()		    以 long 类型返回该 Double 的值（强制转换为 long 类型）
+short shortValue()		    以 short 类型返回该 Double 的值（强制转换为 short 类型）
+boolean isNaN()		        如果此 Double 值是一个非数字值，则返回 true，否则返回 false
+boolean isNaN(float v)		如果指定的参数是一个非数字值，则返回 true，否则返回 false
+String toString()		    返回一个表示该 Double 值的 String 对象
+Double valueOf(String s)	返回保存指定的 String 值的 Double 对象
+double parseFloat(String s) 将数字字符串转换为 Double 数值
+
+Double 类常用常量:
+MAX_VALUE:值为 1.7976931348623157e+308 的常量，它表示 double 类型的最大正有限值的常量。
+MIN_VALUE：值为 4.9e-324 的常量，它表示 double 类型数据能够保持的最小正非零值的常量。
+NaN：保存 double 类型的非数字值的常量。
+NEGATIVE_INFINITY：保持 double 类型的负无穷大的常量。    NEGATIVE_INFINITY = -1.0 / 0.0
+POSITIVE_INFINITY：保持 double 类型的正无穷大的常量。    POSITIVE_INFINITY = 1.0 / 0.0
+SIZE：用秦以二进制补码形式表示 double 值的比特位数。
+TYPE：表示基本类型 double 的 Class 实例
+
+
+
+Number 类
+Number 是一个抽象类，也是一个超类（即父类）
+Number 类属于 java.lang 包，所有的包装类（如 Double、Float、Byte、Short、Integer 以及 Long)都是抽象类 Number 的子类
+抽象类不能直接实例化，而是必须实例化其具体的子类   如：Number num = new Double(12.5);
+Number 类定义xxxValue() 方法，它将 Number 对象转换为 xxx 数据类型的值并返回 如：num.doubleValue()
+
+
+
+Character 类
+Character 类是字符数据类型 char 的包装类。Character 类的对象包含类型为 char 的单个字段
+void Character(char value)	构造一个新分配的 Character 对象，用以表示指定的 char 值   Character charA = 'A';
+
+Character 类常用方法:
+char charValue()	                        返回此 Character 对象的值，此对象表示基本 char 值
+int compareTo(Character anotherCharacter)	根据数字比较两个 Character 对象
+boolean equals(Character anotherCharacter)	将此对象与指定对象比较，当且仅当参数不是 null，
+                                            而是一个与此对象包含相同 char 值的 Character 对象时，结果才是 true
+boolean isDigit(char ch)	                确定指定字符是否为数字，
+                                            如果通过 Character.getType(ch) 提供的字符的常规类别类型为 DECIMAL_DIGIT_NUMBER，则字符为数字
+boolean isLetter(int codePoint)	            确定指定字符（Unicode 代码点）是否为字母
+boolean isLetterOrDigit(int codePoint)	    确定指定字符（Unicode 代码点）是否为字母或数字
+boolean isLowerCase(char ch)	            确定指定字符是否为小写字母
+boolean isUpperCase(char ch)	            确定指定字符是否为大写字母
+char toLowerCase(char ch)	                使用来自 UnicodeData 文件的大小写映射信息将字符参数转换为小写
+char toUpperCase(char ch)	                使用来自 UnicodeData 文件的大小写映射信息将字符参数转换为大写
+
+
+
+Boolean类
+Boolean 类构造形式：boolValue 必须是 true 或 false（不区分大小写），boolString 包含字符串 true（不区分大小写）
+Boolean(boolean boolValue);
+Boolean(String boolString);
+
+Boolean 类常用方法：
+boolean booleanValue()		    将 Boolean 对象的值以对应的 boolean 值返回
+boolean equals(Object obj)		判断调用该方法的对象与 obj 是否相等。当且仅当参数不是 null，
+                                且与调用该方法的对象一样都表示同一个 boolean 值的 Boolean 对象时，才返回 true
+boolean parseBoolean(String s)	boolean	将字符串参数解析为 boolean 值
+boolean toString()		        返回表示该 boolean 值的 String 对象
+boolean valueOf(String s)	    返回一个用指定的字符串表示的 boolean 值
+int compare(boolean x, boolean y)           (x == y) ? 0 : (x ? 1 : -1)
+boolean logicalAnd(boolean x, boolean y)    x && y
+boolean logicalOr(boolean x, boolean y)     x || y
+boolean logicalXor(boolean x, boolean y)    x ^ y
+
+Boolean 类常用常量:
+TRUE：对应基值 true 的 Boolean 对象。
+FALSE：对应基值 false 的 Boolean 对象。
+TYPE：表示基本类型 boolean 的 Class 对象
+
+
+
+Byte类
+一个 Byte 类的对象只包含一个类型为 byte 的字段
+
+Byte 类构造方法:
+Byte b=new Byte(byte my_byte);   表示指定的 byte 值
+Byte b=new Byte(String my_byte);  表示 String 参数所指定的 byte 值
+
+Byte 类常用方法:
+byte byteValue()		    以 byte 类型返回该 Byte 的值
+double doubleValue()		以 double 类型返回该 Byte 的值
+float floatValue()		    以 float 类型返回该 Byte 的值
+int intValue()		        以 int 类型返回该 Byte 的值
+long longValue()		    以 long 类型返回该 Double 的值
+short shortValue()		    以 short 类型返回该 Double 的值
+String toString()		    返回一个表示该 Byte 值的 String 对象
+Byte valueOf(String s)		返回保存指定的 String 值的 Byte 对象
+byte parseByte(String s)    将 String 型参数解析成等价的 byte 形式
+int compareTo(Byte byte)	在数字上比较两个 Byte 对象
+
+Byte 类常用常量:
+MIN_VALUE：byte 类可取的最小值。
+MAX_VALUE：byte 类可取的最大值。
+SIZE：用于以二进制补码形式表示的 byte 值的位数。
+TYPE：表示基本类 byte 的 Class 实例
+
+
+
+System 类
+System 类：系统类，位于 java.lang 包，包含很多系统级属性和控制方法。
+          该类的构造方法是 private 的，所以无法创建该类的对象，也无法实例化该类
+
+System 类静态成员变量：
+1. PrintStream out
+标准输出流。此流已打开并准备接收输出数据。通常，此流对应于显示器输出或者由主机环境或用户指定的另一个输出目标
+System.out.println(data);
+2. InputStream in
+标准输入流。此流已打开并准备提供输入数据。通常，此流对应于键盘输入或者由主机环境或用户指定的另一个输入源。
+int ch = System.in.read();  //变量 ch 必须用 int 类型而不能用 char 类型
+3. PrintStream err
+标准的错误输出流。其语法与 System.out 类似，不需要提供参数就可输出错误信息。也可以用来输出用户指定的其他信息，包括变量的值。
+System.err.println();
+
+System 类成员方法:
+1. arraycopy() 方法
+该方法的作用是数组复制，即从指定源数组中复制一个数组，复制从指定的位置开始，到目标数组的指定位置结束。
+public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+将源数组src中，下标strPos开始的数据复制到目标数组dest从下标destPos开始的位置，共复制length个。复制后src数组成员不变，dest数组相应位置数据改变
+2. currentTimeMillis() 方法
+该方法的作用是返回当前的计算机时间，时间的格式为当前计算机时间与 GMT 时间（格林尼治时间）1970 年 1 月 1 日 0 时 0 分 0 秒所差的毫秒数，
+long m = System.currentTimeMillis();
+3. exit() 方法
+该方法的作用是终止当前正在运行的 Java 虚拟机，具体的定义格式如下：
+public static void exit(int status)
+其中，status 的值为 0 时表示正常退出，非零时表示异常退出。使用该方法可以在图形界面编程中实现程序的退出功能等。
+4. gc() 方法
+该方法的作用是请求系统进行垃圾回收。至于系统是否立刻回收，取决于系统中垃圾回收算法的实现以及系统执行时的情况。定义如下：
+    public static void gc() {
+        Runtime.getRuntime().gc();
+    }
+5. getProperty() 方法
+该方法的作用是获得系统中属性名为 key 的属性对应的值，具体的定义如下：
+public static String getProperty(String key)
+系统常见属性key:
+java. version	Java 运行时琢境版本
+java.home	    Java 安装目录
+os.name	        操作系统的名称
+os.version	    操作系统的版本
+user.name	    用户的账户名称
+user.home	    用户的主目录
+user.dir	    用户的当前工作目录
+

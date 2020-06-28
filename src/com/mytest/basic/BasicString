@@ -1,0 +1,90 @@
+码点：就是某个任意字符在 Unicode 编码表中对应的代码值。
+代码单元：是在计算机中用来表示码点的，大部分码点只需要一个代码单元表示，但是有一些是需要两个代码单元表示的
+
+String API:
+1）char charAt (int index)：返回给定位置的代码单元
+2）int codePointAt(int index) 5.0：返回从给定位置开始的码点
+3）int offsetByCodePoints(int startIndex,int cpCount) 5.0：返回从 startIndex 代码点开始，位移 cpCount 后的码点索引
+4）equals() 方法比较字符串对象中的字符  == 运算符比较两个对象引用看它们是否引用相同的实例
+int compareTo(String other)：
+按照字典顺序，如果字符串位于 other 之前，返回一个负数；如果字符串位于 other 之后，返回一个正数；如果两个字符串相等，返回 0
+5）IntStream codePoints() 8：将这个字符串的码点作为一个流返回。调用 toArray 将它们放在一个数组中
+6）new String(int[] codePoints, int offset, int count) 5.0：用数组中从 offset 开始的 count 个码点构造一个字符串。
+8）boolean equalsIgnoreCase(String other)：如果字符串与 other 相等（忽略大小写）返回 true
+11）int indexOf(String str) / int indexOf(int cp)
+12）int indexOf(String str, int fromIndex) / int indexOf(int cp, int fromIndex)
+返回与字符串 str 或代码点 cp 匹配的第一个子串的开始位置。这个位置从索引 0 或 fromIndex 开始计算。如果在原始串中不存在 str，返回 -1
+15）int lastIndexOf(String str) / int lastIndexOf(int cp)
+16）int lastIndexOf(String str, int fromIndex) / int lastIndexOf(int cp, int fromIndex)
+返回与字符串 str 或代码点 cp 匹配的最后一个子串的开始位置。这个位置从原始串尾端或 fromIndex 往前开始计算，不存在则返回 -1
+20）int codePointCount(int startIndex, int endIndex) 5.0 //endIndex-1 - startIndex + 1
+返回 startIndex 和 endIndex-1 之间的代码点数量。没有配成对的代用字符将计入代码点
+22）String ​substring(int beginIndex) / String substring(int beginIndex, int endIndex)
+返回一个新字符串。这个字符串包含原始字符串中从 beginlndex 到串尾或 endlndex-1 的所有代码单元
+23）String[] split(String regex)  根据 regex 分割字符串
+24）String toLowerCase() / String toUpperCase()       //不会改变原始的字符串
+返回一个新字符串。这个字符串将原始字符串中的大写字母改为小写，或者将原始字符串中的所有小写字母改成了大写字母，非字母不受影响
+27）String join(CharSequence delimiter, CharSequence... elements) 8：返回一个新字符串，用给定的定界符delimiter连接所有元素
+28)字符串 1.concat(字符串 2)：将字符串 2 连接到字符串 1 后面，形成新的字符串
+29) String trim()：去掉字符串首尾的半角空格（英文空格）
+若要去掉全角空格（中文空格）：str = str.replace((char) 12288, " ");    // 将中文空格替换为英文空格
+30) String replace(String oldChar, String newChar):将目标字符串中的指定字符（串）替换成新的字符（串）
+String replaceFirst(String regex, String replacement):将目标字符串中匹配某正则表达式的 第一个 子字符串替换成新的字符串
+String replaceAll(String regex, String replacement):将目标字符串中匹配某正则表达式的 所有 子字符串替换成新的字符串
+
+创建 StringBuffer 类:
+StringBuffer() 构造一个空的字符串缓冲区，并且初始化为 16 个字符的容量。
+StringBuffer(int length) 创建一个空的字符串缓冲区，并且初始化为指定长度 length 的容量。
+StringBuffer(String str) 创建一个字符串缓冲区，并将其内容初始化为指定的字符串内容 str，字符串缓冲区的初始容量为 16 加上字符串 str 的长度
+1) StringBuffer capacity(): 返回字符串的容量大小
+2) StringBuffer append(String str): 向原有 StringBuffer 对象中追加字符串
+3) StringBuffer setCharAt(int index, char ch): 在字符串的指定索引位置替换一个字符
+4) StringBuffer reverse(): 将字符串序列用其反转的形式取代    System.out.println(new StringBuffer("java").reverse()); //avaj
+   // StringBuffer reverse
+   System.out.println(new StringBuffer().append("abcdefg").reverse()); // gfedcba
+   // StringBuilder reverse
+   System.out.println(new StringBuilder().append("abcdefg").reverse()); // gfedcba
+5) StringBuffer deleteCharAt(int index): 用于移除序列中指定位置的字符
+6) StringBuffer delete(int start,int end): 用于移除序列中子字符串的字符
+start 表示要删除字符的起始索引值（包括索引值所对应的字符），end 表示要删除字符串的结束索引值（不包括索引值所对应的字符）
+7) StringBuffer insert(int index, String str): 用于在指定 index 索引值处插入字符串 str
+
+String、StringBuffer和StringBuilder类的区别
+String：字符串首选类型，内容不允许修改。。作为对象引用传递，值本身不会修改
+StringBuffer 与 StringBuild 类内容允许修改
+线程安全：
+StringBuffer：JDK 1.0提供，线程安全，对方法或者调用的方法加了同步锁，使用了 synchronized 关键字
+StringBuilder：JDK 1.5提供，线程不安全
+速度：
+一般情况下，速度从快到慢为 StringBuilder > StringBuffer > String，当然这是相对的，不是绝对的。
+使用环境：
+操作少量的数据使用 String。
+单线程操作大量数据使用 StringBuilder
+多线程操作大量数据使用 StringBuffer
+
+对象（常量）池：
+静态常量池：指程序（*.class）在加载时自动将程序中的常量、类与方法的信息进行内存分配
+运行时常量池：指程序在加载之后，可能会产生的一些变量
+String str1 = "www.baidu.com";
+String str2 = "www." + "baidu" + ".com";
+System.out.println(str1 == str2); //true
+String info = "baidu"; //运行时变量
+String str3 = "www." + info + ".com";
+System.out.println(str1 == str3); //false
+
+内存的分配方式:
+String str1 = "i"; java 虚拟机其内存分配到常量池中，如果有相同数据定义时，可以减少对象的产生，以提升操作性能
+string str2 = "i";  System.out.println(str1 == str2); //true
+String str3 = new String("i"); java 虚拟机其内存分到堆内存中
+                    System.out.println(str1 == str3); //false
+手动入池
+String str4 = new String("i").intern();
+                    System.out.println(str1 == str4); //true
+
+
+AutoCloseable: JDK 1.7 以后，用于资源开发的处理，实现资源的自动关闭，来释放资源
+    public interface AutoCloseable {
+        void close() throws Exception;
+    }
+注：要想实现资源关闭，除了实现 AutoCloseable 接口，还需要结合异常处理语句（try catch）才行
+

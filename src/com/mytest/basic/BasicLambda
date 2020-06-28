@@ -1,0 +1,104 @@
+Lambda 表达式 JDK 1.8 以上
+
+Lambda 表达式使用要求：SAM（Single Abstract Method），在接口中只提供一个抽象方法，故该接口也称为函数式接口
+    只有函数式接口才能被 Lambda 表达式所使用
+
+函数式编程：Haskell Scale
+
+
+
+方法引用：不同的方法名称可以描述同一个方法(描述的方法与引用的方法同参同返回值，就有相同功能了嘛)，要求必须是函数式接口
+1、引用静态方法：类名称 :: static 方法名称
+   @FunctionalInterface
+   interface IFunction<R, P>{
+       public R change(P p);
+   }
+   public static void main(String[] args){
+       IFunction<String, Integer> fun = String :: valueOf;
+       String str = fun.change(100);
+   }
+2、引用某个实例对象的方法：实例对象 :: 普通方法
+    @FunctionalInterface
+    interface IFunction<R>{
+      public R upper();
+    }
+    public static void main(String[] args){
+      IFunction<String> fun = "www.baidu.com" :: toUpperCase;
+      System.out.println(fun.upper())
+    }
+3、引用特定类型的方法：特定类 :: 普通方法
+   @FunctionalInterface
+   interface IFunction<R, P>{
+       public R compare(P p1, P p2);
+   }
+   public static void main(String[] args){
+       IFunction<Integer, String> fun = String :: compareTo;
+       System.out.println(fun.compare("A", "a"))  // -32  A 65  a 97
+   }
+4、引用构造方法：类名称 :: new
+   class Person{
+       String name;
+       int age;
+       public Person(String name, int age){
+           this.name = name;
+           this.age = age;
+       }
+       @override
+       public String toString(){
+           return "name: " + name + "、age: " + age;
+       }
+   }
+   @FunctionalInterface
+   interface IFunction<R, P1, P2>{
+       public R create(P1 p1, P2 p2);
+   }
+   public static void main(String[] args){
+       IFunction<Person, String, Integer> fun = Person :: new;
+       System.out.println(fun.create("Drive", 27))  //name: Drive、age: 27
+   }
+
+
+
+开发包 java.util.function 中，有可直接使用的函数式接口：
+import java.util.function.*;
+1、功能型函数式接口
+   @FunctionalInterface
+   interface Function<T, R>{
+       public R apply(T t);
+   }
+   public static void main(String[] args){
+       Function<String, Boolean> fun = "www.baidu.com" :: startsWith;
+       System.out.println(fun.apply("www"))  //true
+   }
+2、消费型函数式接口：有接收函数，只进行数据处理，而没有返回值
+   @FunctionalInterface
+   interface Consumer<T>{
+       public void accept(T t);
+   }
+   public static void main(String[] args){
+       Consumer<String> con = System.out :: println;
+       con.accept("name: Drive、age: 27")  //name: Drive、age: 27
+   }
+3、供给型函数式接口：没有接收参数，但有返回值
+   @FunctionalInterface
+   interface Supplier<T>{
+       public T get();
+   }
+   public static void main(String[] args){
+      Supplier<String> sun = "WWW.baidu.com" :: toLowerCase;
+      System.out.println(sun.get())  // www.baidu.com
+   }
+4、断言型函数式接口：进行判断处理
+   @FunctionalInterface
+   interface Predicate<T>{
+       public boolean test(T t);
+   }
+   public static void main(String[] args){
+      Predicate<String> pre = "WWW" :: equalsIgnoreCase;
+      System.out.println(pre.test("www"))  // true
+   }
+
+
+
+
+

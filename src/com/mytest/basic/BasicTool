@@ -1,0 +1,95 @@
+开发工具类库：
+1、java.util.UUID 类: 一种生产无重复字符串的程序类
+    获取 UUID 对象：public static UUID randomUUID();
+    根据字符串获取 UUID 对象：public static UUID fromString(String name);
+UUID 适用于一些文件的自动命名
+
+2、java.util.Optional<T> 类：JDK 1.8 之后，主要进行 null 的相关处理
+   构造函数：private Optional() {  this.value = null;  }
+            private Optional(T value) { this.value = Objects.requireNonNull(value);}
+   获取 Optional 类对象：public static <T> Optional<T> of(T value) {
+                           return new Optional(value);
+                       }  //不允许为空
+                       public static <T> Optional<T> ofNullable(T value) {
+                               return value == null ? empty() : of(value);
+                       }   //value 可以为空
+   返回空数据：public static <T> Optional<T> empty() {
+                 Optional<T> t = EMPTY;
+                 return t;
+             }
+   获取数据：public T get() {
+                if (this.value == null) {
+                    throw new NoSuchElementException("No value present");
+                } else {
+                    return this.value;
+                }
+            }
+   保存的数据为空，则返回 other 数据：public T orElse(T other) {
+                                      return this.value != null ? this.value : other;
+                                  }
+
+3、java.lang.ThreadLocale<T> 类：
+当有多个线程在进行各自信息处理，很有可能出现线程信息处理交错的情况，此时就需要使用 ThreadLocale 类给各个线程标记
+   构造方法：public ThreadLocal() {}
+   存储当前线程与处理的对象：public void set(T value) {
+                            Thread t = Thread.currentThread();
+                            ThreadLocal.ThreadLocalMap map = this.getMap(t);
+                            if (map != null) {
+                                map.set(this, value);
+                            } else {
+                                this.createMap(t, value);
+                            }
+                        }
+   根据当前对象取出数据：  public T get() {
+                            Thread t = Thread.currentThread();
+                            ThreadLocal.ThreadLocalMap map = this.getMap(t);
+                            if (map != null) {
+                                ThreadLocal.ThreadLocalMap.Entry e = map.getEntry(this);
+                                if (e != null) {
+                                    T result = e.value;
+                                    return result;
+                                }
+                            }
+                            return this.setInitialValue();
+                        }
+   删除数据：public void remove() {
+                ThreadLocal.ThreadLocalMap m = this.getMap(Thread.currentThread());
+                if (m != null) {
+                    m.remove(this);
+                }
+            }
+
+4、定时器：进行定时任务的处理
+   java.util.TimeTask 类：public abstract class TimerTask implements Runnable{} 实现定时任务
+   java.util.Timer 类：进行定时任务的启动，启动方法：
+       1、延迟 delay 毫秒后启动
+           public void schedule(TimerTask task, long delay) {
+               if (delay < 0L) {
+                   throw new IllegalArgumentException("Negative delay.");
+               } else {
+                   this.sched(task, System.currentTimeMillis() + delay, 0L);
+               }
+           }
+       2、延迟 delay 毫秒后，每隔 period 毫秒启动一次
+           public void schedule(TimerTask task, long delay, long period) {
+               if (delay < 0L) {
+                   throw new IllegalArgumentException("Negative delay.");
+               } else if (period <= 0L) {
+                   throw new IllegalArgumentException("Non-positive period.");
+               } else {
+                   this.sched(task, System.currentTimeMillis() + delay, -period);
+               }
+           }
+
+
+5、java.util.Base64 加密与解密
+   两个内部类：Base64.Encoder: 加密处理
+                 public static Base64.Decoder getDecoder() {
+                     return Base64.Decoder.RFC4648;
+                 }
+             Base64.Decoder: 解密处理
+                 public static Base64.Encoder getEncoder() {
+                     return Base64.Encoder.RFC4648;
+                 }
+
+

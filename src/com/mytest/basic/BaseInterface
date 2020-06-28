@@ -1,0 +1,112 @@
+java.io.OutputStream: 字节输出流  JDK 1.0
+    public abstract class OutputStream implements Closeable, Flushable{}
+1、java.io.Closeable： JDK 1.5
+    public interface Closeable extends AutoCloseable {
+        void close() throws IOException;
+    }
+
+1.1、java.lang.AutoCloseable: JDK 1.7
+    public interface AutoCloseable {
+        void close() throws Exception;  //使用 try(){}catch() 实现自动关闭
+    }
+
+2、java.io.Flushable：  JDK 1.5
+    public interface Flushable {
+        void flush() throws IOException;
+    }
+
+
+java.io.Writer 类：字符输出流 JDK 1.1
+     public abstract class Writer implements Appendable, Closeable, Flushable{}
+3、java.lang.Appendable:
+    public interface Appendable {
+        Appendable append(CharSequence var1) throws IOException;
+
+        Appendable append(CharSequence var1, int var2, int var3) throws IOException;
+
+        Appendable append(char var1) throws IOException;
+    }
+
+java.io.Reader 类：字符输入流 JDK 1.1
+    public abstract class Reader implements Readable, Closeable{}
+4、java.lang.Readable:  JDK 1.5
+    public interface Readable {
+        int read(CharBuffer var1) throws IOException;
+    }
+
+5、java.io.Serializable  JDK 1.1   对象序列化标记
+   public interface Serializable {
+   }
+
+6、java.lang.reflect.InvocationHandler  动态代理设计接口
+   public interface InvocationHandler {
+       Object invoke(Object var1, Method var2, Object[] var3) throws Throwable;
+   }
+
+7、java.lang.annotation.Annotation  JDK 1.5
+   public interface Annotation {
+       boolean equals(Object var1);
+
+       int hashCode();
+
+       String toString();
+
+       Class<? extends Annotation> annotationType();
+   }
+
+
+8、java.util.Iterator<E>: 提供集合遍历的接口
+       public interface Iterator<E> {
+           boolean hasNext();
+           E next();
+           default void remove() {
+               throw new UnsupportedOperationException("remove");
+           }
+           default void forEachRemaining(Consumer<? super E> action) {
+               Objects.requireNonNull(action);
+               while(this.hasNext()) {
+                   action.accept(this.next());
+               }
+           }
+       }
+   java.util.ListIterator<E>: 提供 List 集合遍历的接口
+       public interface ListIterator<E> extends Iterator<E> {
+           boolean hasNext();
+
+           E next();
+
+           boolean hasPrevious();
+
+           E previous();
+
+           int nextIndex();
+
+           int previousIndex();
+
+           void remove();
+
+           void set(E var1);
+
+           void add(E var1);
+       }
+
+9、javax.sql.DataSource:  JDK 1.4  自定义（第三方）数据库连接池实现接口
+    public interface DataSource extends CommonDataSource, Wrapper {
+        Connection getConnection() throws SQLException;  //获取数据库连接对象
+
+        Connection getConnection(String var1, String var2) throws SQLException;
+
+        PrintWriter getLogWriter() throws SQLException;
+
+        void setLogWriter(PrintWriter var1) throws SQLException;
+
+        void setLoginTimeout(int var1) throws SQLException;
+
+        int getLoginTimeout() throws SQLException;
+
+        default ConnectionBuilder createConnectionBuilder() throws SQLException {
+            throw new SQLFeatureNotSupportedException("createConnectionBuilder not implemented");
+        }
+    }
+
+

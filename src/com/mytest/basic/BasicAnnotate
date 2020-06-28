@@ -1,0 +1,4 @@
+@Override 方法覆写
+@Deprecated 过期声明
+@SuppressWarnings({"编译警告类型"}) 压制警告，"编译警告类型"，比如deprecation
+@FunctionalInterface 函数式接口：接口中只提供一个抽象方法，能被 Lambda 表达式所使用

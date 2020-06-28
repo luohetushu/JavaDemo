@@ -1,0 +1,84 @@
+java.util.Arrays 类：
+    对对象数组的排序支持：public static void sort(Object[] a) {
+                           if (Arrays.LegacyMergeSort.userRequested) {
+                               legacyMergeSort(a);
+                           } else {
+                               ComparableTimSort.sort(a, 0, a.length, (Object[])null, 0, 0);
+                           }
+                       }
+
+自定义类对象的排序
+注：任何一个自定义类默认情况下是无法使用系统内部的类实现数组排序或比较的
+    java.lang.ClassCastException: class com.mytest.basic.BasicCompare$Member cannot be cast to class java.lang.Comparable
+要想实现自定义类的比较，需要实现比较器接口：java.lang.Comparable<T>
+
+
+比较器接口：java.lang.Comparable<T>
+    public interface Comparable<T> {
+        //当前数据比传入的数据小，则返回负数；相等则返回0；比传入的数据大，则返回正数
+        int compareTo(T var1);
+    }
+注：任何一个类只要实现了 Comparable<T> 接口，并在 compareTo 方法中实现了比较规则，那么就可以使用 java 系统实现其对象排序
+
+
+比较器接口：java.util.Comparator<T>
+    @FunctionalInterface
+    public interface Comparator<T> {}
+用于没有实现 java.lang.Comparable<T> 接口的类的对象的排序
+    基于 Comparator 的排序处理：java.util.Arrays 中方法：
+        public static <T> void sort(T[] a, Comparator<? super T> c) {
+            if (c == null) {
+                sort(a);
+            } else if (Arrays.LegacyMergeSort.userRequested) {
+                legacyMergeSort(a, c);
+            } else {
+                TimSort.sort(a, 0, a.length, c, (Object[])null, 0, 0);
+            }
+
+        }
+
+
+
+二叉树结构
+实现原理：第一个数据保存为根节点，小于或等于根节点的数据放在节点的左子树，大于根节点的数据放在节点的右子树
+        此时进行数据检索的话，时间复杂度为 O(logn)
+数据获取形式：
+    前序遍历（根-左-右）：
+    中序遍历（左-根-右）：
+    后序遍历（左-右-根）：
+
+
+
+红黑树结构：相较于二叉树，红黑树在节点上多了一个表示颜色的操作信息
+本质是二叉树，在二叉树的基础上额外添加类一个标记，使之具有一定的规则，从而保证类红黑树的平衡，
+    即插入、删除、查找的最坏时间复杂度都为（logn）
+红黑树特点：
+    1、每个节点要么是黑色、要么是红色
+    2、根节点必须是黑色
+    3、每个叶子节点（红黑树最底端的空节点）是黑色的
+        java中，实现的红黑树是用 null 来表示空节点的
+    4、如果一个节点是红色的，则它的子节点必须是黑色的
+        从每个根到节点的路径上不会有两个连续的红色节点，但黑色的节点可以连续
+        若给定的黑色节点是 N 个，最短路径情况下是 N 个连续的黑色节点，则树的高度为 N-1
+                              最长路径情况下是红黑节点数相同，树的高度为 2(N-1)
+    5、从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点
+    注：为了红黑树数据插入的方便，都会将新的节点用红色来描述，然后根据规则相应变黑色
+红黑树数据插入原则：
+    1、第一次插入，只需设置根节点为黑色
+    2、如果插入节点的父节点是黑色，则正常插入；
+    当遇到以下三种情况，插入的节点需要进行变色和旋转操作：
+    1、插入节点的父节点与叔叔节点（祖父节点的另一个子节点）均为红色，则将插入节点的父节点与叔叔节点变黑色
+    2、插入节点的父节点是红色，叔叔节点是黑色，且插入的节点是父节点的左子节点，
+       则将插入节点的父节点与祖父节点颜色互换，然后进行右旋处理（原先的插入节点的父节点变为这一部分节点的祖父节点）
+    2、插入节点的父节点是红色，叔叔节点是黑色，且插入的节点是父节点的右子节点，
+       则将新增节点与父节点进行左旋处理（新增节点变为父节点，父节点变为新增节点的左子节点），此时变为情况二，
+       再将新增的节点与原先的祖父节点（当前的父节点）颜色互换，然后进行右旋处理
+红黑树数据删除原则：
+    1、如果删除节点没有子节点，直接删除
+    2、如果删除节点只有一个子节点，直接删除，并用子节点代替它
+    3、如果删除节点有两个子节点，
+
+
+
+
+

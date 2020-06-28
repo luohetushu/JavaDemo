@@ -1,0 +1,152 @@
+面向过程：面向过程性能比面向对象高    1、对象调用时需要实例化，比较耗资源  2、Java是半编译语言，不是可以直接被CPU执行的二进制机器码
+面向对象：面向对象易维护、易复用、易扩展   面向对象有封装、继承、多态等特性，可以设计出低耦合的系统，使系统更加灵活、更加易于维护
+
+Oracle JDK 基于 OpenJDK 7 构建
+Oracle JDK更稳定，性能更好，根据二进制代码许可协议获得许可
+OpenJDK 根据 GPL v2 许可获得许可
+注：Oracle JDK 使用需要用户每次通过更新到最新版本来获得支持最新版本
+
+Java 与 C++ 都是面向对象的语言，支持封装、继承和多态
+Java 不提供指针来直接访问内存，程序内存更加安全；Java 的类是单继承的，不支持多重继承，可实现多接口；
+     Java 有自动内存管理机制，无需程序员手动释放无用内存
+     Java 声明数组无需分配任何存储内存，数组大小只有在数组使用new关键字真正创建时被给定
+     Java 语言中没有结束符，Java 里面一切都是对象，对象有属性length，编译器可以确定要输出的字符个数
+C++ 支持多重继承；C++ 声明数组是内存空间大小被特别标志；在 C 语言中，字符串或字符数组最后有一个额外的字符‘\0’来表示结束。
+
+在 C++ 中提供两种函数：
+1、构造函数：对象实例化时，进行数据初始化
+2、析构函数：进行对象手工回收
+
+程序中可以有多个类，但只能有一个主类，主类是 Java 程序执行的入口
+在 Java 应用程序中，主类是指包含 main（）方法的类，主类不一定要求是 public 类
+在 Java 小程序中，主类是继承自系统类 JApplet 或 Applet 的子类，主类要求必须是 public 类
+
+字符型常量和字符串常量的区别：
+形式上: 字符常量是单引号引起的一个字符; 字符串常量是双引号引起的若干个字符
+含义上: 字符常量相当于一个整型值( ASCII 值),可以参加表达式运算; 字符串常量代表一个地址值(该字符串在内存中存放位置)
+占内存大小: 字符常量只占 2 个字节; 字符串常量占若干个字节 (注意： char 在 Java 中占两个字节)
+
+自动装箱与拆箱
+装箱：将基本类型用它们对应的引用类型包装起来； 装箱是自动将基本数据类型转换为包装器类型
+拆箱：将包装类型转换为基本数据类型；          拆箱是自动将包装器类型转换为基本数据类型
+
+
+成员变量与内部变量
+语法形式上: 成员变量是属于类的，可以被 public,private,static 等修饰符所修饰；没有使用static修饰，成员变量是属于实例的
+          局部变量是在方法中定义的变量或是方法的参数，不能被访问控制修饰符及 static 所修饰；成员变量和局部变量都能被 final 所修饰
+存储方式上: 对象存在于堆内存，局部变量则存在于栈内存
+生存时间上: 成员变量是对象的一部分，随着对象的创建而存在；局部变量随着方法的调用而自动消失
+自动赋值上: 成员变量如果没有被赋初值，则会自动以类型的默认值而赋值；局部变量则不会自动赋值
+           被 final 修饰的成员变量必须显式地赋值，内部变量不用
+
+栈stack内存：由编译器自动分配和释放的一块内存区域，用于存放函数参数、局部变量、临时变量等。
+            栈优势在于存取速度比较快，且栈中的数据可以共享；缺点表现在，存在栈中的数据大小与生存期必须是确定的，缺乏灵活性
+堆heap内存：是程序运行动态分配的内存区域。构建对象时通过new指令“显式”建立，所需要的内存从堆中分配。
+           堆内存在使用完毕后，由垃圾回收（Garbage Collection,GC）器“隐式”回收
+           堆优势在于动态地分配内存大小，可以“按需分配”，其生存期也不必事先告诉编译器，使用完毕后，GC会自动释放内存块；缺点为存取速度较慢
+静态存储区：内存在程序编译时即分配好，该内存在程序的整个运行期间都存在，主要存放静态数据、全局数据和常量
+
+创建对象，eg：
+Vector vec; //对象引用，存在于栈内存中，1个对象可以指向0或者1个对象
+vec1 = new Vector(); //对象实例，存在于堆内存，1个对象可以有n个对象引用
+vec2 = new Vector();
+vec2 = vec1; //引用传递，原vec2创建的堆内存失去对象调用而成为垃圾空间，由垃圾回收（Garbage Collection,GC）器“隐式”回收
+
+对象相等，比的是内存中存放的内容是否相等
+引用相等，比的是他们指向的内存地址是否相等
+== : 判断两个对象的地址是不是相等，即判断两个对象是不是同一个对象(基本数据类型==比较的是值，引用数据类型==比较的是内存地址)
+equals() : 判断两个对象是否相等
+           类如果覆盖了 equals() 方法，则 equals() 方法比较两个对象的内容是否相等；若它们的内容相等，则返回 true (即，认为这两个对象相等)
+           类如果没有覆盖 equals() 方法，则 equals() 等价于通过“==”比较两个对象
+hashCode(): 获取哈希码，也称散列码，一个 int 整数，确定该对象在哈希表中的索引位置
+注：“ ==”运算符用于比较状态，并且如果两个值均为null 都不会引发 NullPointerException；如果使用equals方法，将抛出 NullPointerException
+
+hashCode（）与 equals（）的相关规定
+1、如果两个对象相等，则 hashcode 一定也是相同的
+2、两个对象相等,对两个对象分别调用 equals 方法都返回 true
+3、两个对象有相同的 hashcode 值，它们也不一定是相等的，因此，如果 equals 方法被覆盖，hashCode 方法也必须被覆盖
+4、hashCode() 的默认行为是对堆上的对象产生独特值。如果没有重写 hashCode()，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）
+
+在调用子类构造方法之前会先调用父类没有参数的构造方法，其目的是帮助子类做初始化工作
+
+1、final 基本数据类型的变量，其数值一旦在初始化之后便不能更改；final 引用类型的变量，对其初始化之后便不能再让其指向另一个对象
+2、final 修饰类，表明该类不能被继承，且类中的所有成员方法都会被隐式地指定为 final 方法
+3、final 方法，把方法锁定，以防任何继承类修改它的含义；类中所有的 private 方法都隐式地指定为 final
+
+Throwable 类，两个重要的子类：Exception（异常） 和 Error（错误）
+Error（错误）:是程序无法处理的错误，程序还未执行出现的错误，开发者无法处理
+Exception（异常）:是程序本身可以处理的异常，程序中出现的异常，开发者可以处理
+
+Throwable 类常用方法
+public string getMessage():返回异常发生时的简要描述
+public string toString():返回异常发生时的详细信息
+public string getLocalizedMessage():返回异常对象的本地化信息。
+      使用 Throwable 的子类覆盖这个方法，可以生成本地化信息。如果子类没有覆盖该方法，则该方法返回的信息与 getMessage（）返回的结果相同
+public void printStackTrace():在控制台上打印 Throwable 对象封装的异常信息
+
+transient 关键字：阻止实变量序列化  transient 只能修饰变量，不能修饰类和方法
+
+获取键盘输入：
+1、Scanner input = new Scanner(System.in);
+   String s  = input.nextLine();
+   input.close();
+2、BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+   String s = input.readLine();
+
+浮点数之间的等值判断，基本数据类型不能用==来比较，包装数据类型不能用 equals 来判断，因为精度丢失
+使用使用 BigDecimal 来定义浮点数的值，再进行浮点数的运算操作
+为了防止精度丢失，使用 BigDecimal(String) 构造方法来创建对象，或使用 valueOf 方法：
+   BigDecimal bd1 = new BigDecimal("0.1")
+   BigDecimal bd1 = BigDecimal.valueOf(0.1)
+
+工具类 Arrays.asList() 将数组转换成集合，但底层还是数组，故使用修改集合的相关方法，如 add/remove/clear，
+   会抛出 UnsupportedOperationException
+   String[] str = new String[]{"we", "you"};  List list = Arrays.asList(str);
+   或者 List list = Arrays.asList("we", "you")
+   1、list.add("they"); 运行异常
+   2、str[0] = "us"; 相对应，list.get(0) 随之修改
+
+当传入基础数据类型数组时，Arrays.asList() 真正的参数不是数组中的元素，而是数组对象本身！此时List 的唯一元素是该数组
+   int[] myArray = { 1, 2, 3 };
+   List myList = Arrays.asList(myArray);
+   System.out.println(myList.size()); //1
+   System.out.println(myList.get(0)); //数组地址值 [I@50cbc42f
+   使用包装类型数组 Integer[] myArray = { 1, 2, 3 }; 则可以避免这种情况
+
+将数组转换成ArrayList：
+1、List list = new ArrayList<>(Arrays.asList("a", "b", "c"))
+2、Integer [] myArray = { 1, 2, 3 };
+  List myList = Arrays.stream(myArray).collect(Collectors.toList());
+  //基本类型也可以实现转换（依赖boxed的装箱操作）
+  int [] myArray2 = { 1, 2, 3 };
+  List myList = Arrays.stream(myArray2).boxed().collect(Collectors.toList());
+3、对于不可变集合，你可以使用ImmutableList类及其of()与copyOf()工厂方法：（参数不能为空）
+      List<String> il = ImmutableList.of("string", "elements");  // from varargs
+      List<String> il = ImmutableList.copyOf(aStringArray);      // from array
+  对于可变集合，你可以使用Lists类及其newArrayList()工厂方法：
+      List<String> l1 = Lists.newArrayList(anotherListOrCollection);    // from collection
+      List<String> l2 = Lists.newArrayList(aStringArray);               // from array
+      List<String> l3 = Lists.newArrayList("or", "string", "elements"); // from varargs
+4、List<String> list = new ArrayList<String>();
+  CollectionUtils.addAll(list, aStringArray); // from array
+
+引用数据的关联，就是类的关联
+
+程序开发：配置文件 + 注解
+所有程序开发都是以接口为标准进行开发的，标准就是接口
+
+UML(Unified Modeling Language)即统一建模语言，是用于系统可视化建模语言
+类图包含了：类和对象、类之间的关系、类之间的多重性
+    +、-、# 表示权限，分表表示public、private、protected
+    UML类图中用带箭头的虚线表示依赖关系
+
+时序图(Sequence Diagram)，又名序列图、循序图，一种UML交互图。通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作
+
+进行资源操作：方法 throws 异常，try 执行代码，finally 释放资源
+
+以后程序开发过程中，数据输出首选打印流（PrintWriter），数据输入首选 Scanner （JDK 1.5 之后，或者 BufferReader JDK 1.5 之前）
+
+代理设计模式：真实业务只实现核心功能，代理设计辅助逻辑处理
+
+应用程序开发：利用自定义 ClassLoader 类获取网络中的 类.class 的字节码文件，避免客户端的修改
+
